@@ -147,17 +147,17 @@ Metastore configuration is not available for HBase cluster types.
 
 2. From the Spark cluster blade, click **Quick Links**, and then from the **Cluster Dashboard** blade, click **Jupyter Notebook**. If prompted, enter the admin credentials for the cluster.
 
-	> [AZURE.NOTE] You may also reach the Jupyter Notebook for your cluster by opening the following URL in your browser. Replace __CLUSTERNAME__ with the name of your cluster:
+	> You may also reach the Jupyter Notebook for your cluster by opening the following URL in your browser. Replace __CLUSTERNAME__ with the name of your cluster:
 	>
 	> `https://CLUSTERNAME.azurehdinsight.net/jupyter`
 
 2. Create a new notebook. Click **New**, and then click **Spark**.
 
-	![Create a new Jupyter notebook](./media/hdinsight-apache-spark-jupyter-notebook-use-external-packages/hdispark.note.jupyter.createnotebook.png "Create a new Jupyter notebook")
+	![Create a new Jupyter notebook](https://raw.githubusercontent.com/Azure/azure-content/master/articles/hdinsight/media/hdinsight-apache-spark-jupyter-notebook-use-external-packages/hdispark.note.jupyter.createnotebook.png "Create a new Jupyter notebook")
 
 3. A new notebook is created and opened with the name Untitled.pynb. Click the notebook name at the top, and enter a friendly name.
 
-	![Provide a name for the notebook](./media/hdinsight-apache-spark-jupyter-notebook-use-external-packages/hdispark.note.jupyter.notebook.name.png "Provide a name for the notebook")
+	![Provide a name for the notebook](https://raw.githubusercontent.com/Azure/azure-content/master/articles/hdinsight/media/hdinsight-apache-spark-jupyter-notebook-use-external-packages/hdispark.note.jupyter.notebook.name.png "Provide a name for the notebook")
 
 4. You will use the `%%configure` magic to configure the notebook to use an external package. In notebooks that use external packages, make sure you call the `%%configure` magic in the first code cell. This ensures that the kernel is configured to use the package before the session starts.
 
@@ -165,7 +165,7 @@ Metastore configuration is not available for HBase cluster types.
 		{ "packages":["com.databricks:spark-csv_2.10:1.4.0"] }
 
 
-	>[AZURE.IMPORTANT] If you forget to configure the kernel in the first cell, you can use the `%%configure` with the `-f` parameter, but that will restart the session and all progress will be lost.
+	>if you forget to configure the kernel in the first cell, you can use the `%%configure` with the `-f` parameter, but that will restart the session and all progress will be lost.
 
 5. In the snippet above, `packages` expects a list of maven coordinates in Maven Central Repository. In this snippet, `com.databricks:spark-csv_2.10:1.4.0` is the maven coordinate for **spark-csv** package. Here's how you construct the coordinates for a package.
 
@@ -173,7 +173,7 @@ Metastore configuration is not available for HBase cluster types.
 	
 	b. From the repository, gather the values for **GroupId**, **ArtifactId**, and **Version**.
 
-	![Use external packages with Jupyter notebook](./media/hdinsight-apache-spark-jupyter-notebook-use-external-packages/use-external-packages-with-jupyter.png "Use external packages with Jupyter notebook")
+	![Use external packages with Jupyter notebook](https://raw.githubusercontent.com/Azure/azure-content/master/articles/hdinsight/media/hdinsight-apache-spark-jupyter-notebook-use-external-packages/use-external-packages-with-jupyter.png "Use external packages with Jupyter notebook")
 
 	c. Concatenate the three values, separated by a colon (**:**).
 
