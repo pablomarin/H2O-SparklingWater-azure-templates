@@ -185,14 +185,15 @@
                   "username": "[parameters('sshUserName')]",
                   "password": "[parameters('sshPassword')]"
                 }
-              }/*,
+              },
               "scriptActions": [
                 {
-                  "name": "install-extras",
-                  "uri": "https://raw.githubusercontent.com/pablomarin/Azure-Linux-DSVM-plus-extras/master/install_extras.sh",
-                  "parameters": "1"
+                  "name": "installR",
+                  "uri": "https://hdiconfigactions.blob.core.windows.net/linuxrconfigactionv01/r-installer-v01.sh",
+                  "parameters": ""
+
                 }
-              ]*/
+              ]
             },
             {
               "name": "workernode",
