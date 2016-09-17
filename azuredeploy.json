@@ -74,7 +74,7 @@
     },
     "clusterHeadNodeSize": {
       "type": "string",
-      "defaultValue": "Standard_D3_v2",
+      "defaultValue": "Standard_DS3_v2",
       "allowedValues": [
         "Standard_DS1_v2",
         "Standard_DS2_v2",
@@ -100,7 +100,7 @@
     },
     "clusterWorkerNodeSize": {
       "type": "string",
-      "defaultValue": "Standard_D3_v2",
+      "defaultValue": "Standard_DS3_v2",
       "allowedValues": [
         "Standard_DS1_v2",
         "Standard_DS2_v2",
