@@ -16,7 +16,7 @@ h2oBuild=`cat latest`
 wait
 
 echo "Downloading Sparkling Water version ${version}.${h2oBuild} ..."
-wget http://h2o-release.s3.amazonaws.com/sparkling-water/${SparklingBranch}/${h2oBuild]/sparkling-water-${version}.${h2oBuild}.zip &
+wget http://h2o-release.s3.amazonaws.com/sparkling-water/${SparklingBranch}/${h2oBuild}/sparkling-water-${version}.${h2oBuild}.zip &
 wait
 
 echo "Unzipping sparkling-water-${version}.${h2oBuild}.zip ..."
@@ -28,7 +28,6 @@ export SPARKLING_HOME="/home/$2/sparkling-water-${version}.${h2oBuild}"
 export MASTER="yarn-client"
 wait
 
-
 echo "Running sparkling-water-${version}.${h2oBuild}"
 # Use 90% of RAM for H2O.
 memTotalKb=`cat /proc/meminfo | grep MemTotal | sed 's/MemTotal:[ \t]*//' | sed 's/ kB//'`
@@ -36,9 +35,9 @@ memTotalMb=$[ $memTotalKb / 1024 ]
 memTotalGB=$[ $memTotalMb / 1024 ]
 tmp=$[ $memTotalGB * 90 ]
 xmxGb=$[ $tmp / 100 ]
-echo "GB memory = ${xmxGb}""
+echo "GB memory = ${xmxGb}"
 
-$SPARKLING_HOME/bin/sparkling-shell --num-executors $1 --executor-memory $xmxGb --driver-memory $xmxGb --master yarn-client &
-$SPARKLING_HOME/bin/pysparkling --num-executors $1 --executor-memory $xmxGb --driver-memory $xmxGb --master yarn-client &
+$SPARKLING_HOME/bin/sparkling-shell --num-executors $1 --executor-memory ${xmxGb}g --driver-memory ${xmxGb}g --master yarn-client &
+$SPARKLING_HOME/bin/pysparkling --num-executors $1 --executor-memory ${xmxGb}g --driver-memory ${xmxGb}g --master yarn-client &
 
 echo Success.
