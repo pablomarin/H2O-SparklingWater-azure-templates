@@ -26,7 +26,7 @@
     "clusterName": {
       "type": "string",
       "metadata": {
-        "description": "The name of the HDInsight cluster to create."
+        "description": "The name of the HDInsight Spark cluster to create."
       }
     },
     "clusterLoginUserName": {
@@ -46,7 +46,7 @@
       "type": "string",
       "defaultValue": "sshuser",
       "metadata": {
-        "description": "These credentials can be used to remotely access the cluster."
+        "description": "These credentials can be used to remotely access the cluster via ssh"
       }
     },
     "sshPassword": {
@@ -59,9 +59,6 @@
       "type": "string",
       "defaultValue": "spark",
       "allowedValues": [
-        "hadoop",
-        "hbase",
-        "storm",
         "spark"
       ],
       "metadata": {
@@ -72,52 +69,52 @@
       "type": "int",
       "defaultValue": 2,
       "metadata": {
-        "description": "The number of head nodes in the HDInsight cluster."
+        "description": "The number of head nodes in the HDInsight Spark cluster."
       }
     },
     "clusterHeadNodeSize": {
       "type": "string",
       "defaultValue": "Standard_D3_v2",
       "allowedValues": [
-        "Standard_D1_v2",
-        "Standard_D2_v2",
-        "Standard_D3_v2",
-        "Standard_D4_v2",
-        "Standard_D5_v2",
-        "Standard_D11_v2",
-        "Standard_D12_v2",
-        "Standard_D13_v2",
-        "Standard_D14_v2",
-        "Standard_D15_v2"
+        "Standard_DS1_v2",
+        "Standard_DS2_v2",
+        "Standard_DS3_v2",
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_DS11_v2",
+        "Standard_DS12_v2",
+        "Standard_DS13_v2",
+        "Standard_DS14_v2",
+        "Standard_DS15_v2"
       ],
       "metadata": {
-        "description": "The size of the head nodes in the HDInsight cluster."
+        "description": "The size of the head nodes in the HDInsight Spark cluster."
       }
     },
     "clusterWorkerNodeCount": {
       "type": "int",
       "defaultValue": 2,
       "metadata": {
-        "description": "The number of worker nodes in the HDInsight cluster."
+        "description": "The number of worker nodes in the HDInsight Spark cluster."
       }
     },
     "clusterWorkerNodeSize": {
       "type": "string",
       "defaultValue": "Standard_D3_v2",
       "allowedValues": [
-        "Standard_D1_v2",
-        "Standard_D2_v2",
-        "Standard_D3_v2",
-        "Standard_D4_v2",
-        "Standard_D5_v2",
-        "Standard_D11_v2",
-        "Standard_D12_v2",
-        "Standard_D13_v2",
-        "Standard_D14_v2",
-        "Standard_D15_v2"
+        "Standard_DS1_v2",
+        "Standard_DS2_v2",
+        "Standard_DS3_v2",
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_DS11_v2",
+        "Standard_DS12_v2",
+        "Standard_DS13_v2",
+        "Standard_DS14_v2",
+        "Standard_DS15_v2"
       ],
       "metadata": {
-        "description": "The size of the head nodes in the HDInsight cluster."
+        "description": "The size of the head nodes in the HDInsight Spark cluster."
       }
     },
     "linkAdditionalStorageAccount": {
@@ -128,21 +125,21 @@
         "No"
       ],
       "metadata": {
-        "description": "Whether or not to link an additional storage account to the HDInsight cluster. If choose 'Yes', then you must provide a storage account name, container name and the storage key."
+        "description": "Whether or not to link an additional storage account to the HDInsight Spark cluster. If choose 'Yes', then you must provide a storage account name (below), container name and the storage key. This is normaly where your data resides."
       }
     },
     "linkStorageAccountName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "The additional Azure storage account name where the data exists."
+        "description": "The additional Azure storage account name where your data resides."
       }
     },
     "linkStorageContainerName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "The additional Azure storage account container name where the data exists."
+        "description": "The additional Azure storage account container name where the data resides."
       }
     },
     "linkStorageAccountKey": {
