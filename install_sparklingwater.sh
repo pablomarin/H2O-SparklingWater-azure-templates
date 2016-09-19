@@ -29,15 +29,29 @@ export MASTER="yarn-client"
 wait
 
 echo "Running sparkling-water-${version}.${h2oBuild}"
-# Use 90% of RAM for H2O.
+# Get the available RAM in GB and Number of cores
 memTotalKb=`cat /proc/meminfo | grep MemTotal | sed 's/MemTotal:[ \t]*//' | sed 's/ kB//'`
 memTotalMb=$[ $memTotalKb / 1024 ]
 memTotalGB=$[ $memTotalMb / 1024 ]
-tmp=$[ $memTotalGB * 90 ]
-xmxGb=$[ $tmp / 100 ]
-echo "GB memory = ${xmxGb}"
+usable_mem=$[ $memTotalGB ]
+echo "Usable RAM = ${memTotalGB}"
 
-$SPARKLING_HOME/bin/sparkling-shell --num-executors $1 --executor-memory ${xmxGb}g --driver-memory ${xmxGb}g --master yarn-client &
-$SPARKLING_HOME/bin/pysparkling --num-executors $1 --executor-memory ${xmxGb}g --driver-memory ${xmxGb}g --master yarn-client &
+usable_cores=`grep '^core id' /proc/cpuinfo |sort -u|wc -l`
+usable_cores=$[ $usable_cores - 1]
+echo "Usables Cores = ${usable_cores}"
+
+factor=3
+num_executors=$[ ($1 * $factor) - 1]
+executor_cores=$[ $usable_cores / $factor]
+executor_cores=${executor_cores%.*}
+executor_memory=$(($usable_mem / $factor))
+executor_memory=${executor_memory%.*}
+
+echo "num_executors = ${num_executors}"
+echo "executor_cores = ${executor_cores}"
+echo "executor_memory = ${executor_memory}"
+
+$SPARKLING_HOME/bin/sparkling-shell --num-executors $num_executors --executor-cores ${executor_cores} --executor-memory ${executor_memory}g --driver-memory ${usable_mem}g --master yarn-client &
+$SPARKLING_HOME/bin/pysparkling --num-executors $num_executors --executor-cores ${executor_cores} --executor-memory ${executor_memory}g --driver-memory ${usable_mem}g --master yarn-client &
 
 echo Success.
