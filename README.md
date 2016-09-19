@@ -56,6 +56,23 @@ In this article, you will use the PySpark kernel. In the article [Kernels availa
 * You can use cell magics, such as `%%sql`, to directly run your SQL or Hive queries, without any preceding code snippets.
 * The output for the SQL or Hive queries is automatically visualized.
 
+### Tips for Executor memory allocation 
+Assume there are 6 nodes available on a cluster with 25 core nodes and 125 GB memory per node. It is natural to try to utilize those resources as much as possible for your Sparkling Water application, before considering requesting more nodes (which might result in longer wait times in the queue and overall longer times to get the result). 
+
+With YARN, a possible approach would be to use --num-executors 6 --executor-cores 24 --executor-memory 124G. Here, we subtracted 1 core and some memory per node to allow for operating system and/or cluster specific daemons to run. However, this approach would be not be optimal, because large number of cores per executor leads to HDFS I/O throughput and thus significantly slow down the application. Allocating a similar number of cores would be possible by increasing the number of executors and decreasing the number of executor-cores and memory.
+
+A recommended approach when using YARN would be to use --num-executors 30 --executor-cores 4 --executor-memory 24G. Which would result in YARN allocating 30 containers with executors, 5 containers per node using up 4 executor cores each. The RAM per container on a node 124/5= 24GB (roughly).
+
+This is the formula:<br>
+usable_mem = mem_per_node - 1G<br>
+usable_cores = cores_per_node - 1<br>
+n = 3 or 5 (make it so the number of cores per executor should be maximum 5)<br>
+<br>
+num-executors = no_nodes x n - 1<br>
+executor-cores = usable_cores / n<br>
+executor-memory = usable_mem * 0.97 / n <br>
+
+
 ### Create Jupyter notebook with PySpark kernel 
 
 1. From the [Azure Portal](https://portal.azure.com/), from the startboard, click the tile for your Spark cluster (if you pinned it to the startboard). You can also navigate to your cluster under **Browse All** > **HDInsight Clusters**.   
