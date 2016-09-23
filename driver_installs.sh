@@ -13,6 +13,7 @@ SparklingBranch=rel-${version}
 echo "Fetching latest build number for branch ${SparklingBranch}..."
 curl --silent -o latest https://h2o-release.s3.amazonaws.com/sparkling-water/${SparklingBranch}/latest
 h2oBuild=`cat latest`
+h2oBuild=5
 wait
 
 echo "Downloading Sparkling Water version ${version}.${h2oBuild} ..."
@@ -51,7 +52,7 @@ echo "num_executors = ${num_executors}"
 echo "executor_cores = ${executor_cores}"
 echo "executor_memory = ${executor_memory}"
 
-$SPARKLING_HOME/bin/sparkling-shell --num-executors $num_executors --executor-cores ${executor_cores} --executor-memory ${executor_memory}g --driver-memory ${usable_mem}g --master yarn-client &
-$SPARKLING_HOME/bin/pysparkling --num-executors $num_executors --executor-cores ${executor_cores} --executor-memory ${executor_memory}g --driver-memory ${usable_mem}g --master yarn-client &
+#$SPARKLING_HOME/bin/sparkling-shell --num-executors $num_executors --executor-cores ${executor_cores} --executor-memory ${executor_memory}g --driver-memory ${usable_mem}g --master yarn-client &
+#$SPARKLING_HOME/bin/pysparkling --num-executors $num_executors --executor-cores ${executor_cores} --executor-memory ${executor_memory}g --driver-memory ${usable_mem}g --master yarn-client &
 
 echo Success.
