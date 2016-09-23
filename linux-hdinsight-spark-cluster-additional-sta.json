@@ -212,7 +212,11 @@
                   "name": "installR",
                   "uri": "https://hdiconfigactions.blob.core.windows.net/linuxrconfigactionv01/r-installer-v01.sh",
                   "parameters": ""
-
+                },
+                {
+                  "name": "driver_installs",
+                  "uri": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/master/driver_installs.sh",
+                  "parameters": "[concat(parameters('clusterWorkerNodeCount'), ' ', parameters('sshUserName'))]"
                 }
               ]
             },
@@ -227,7 +231,19 @@
                   "username": "[parameters('sshUserName')]",
                   "password": "[parameters('sshPassword')]"
                 }
-              }
+              },
+              "scriptActions": [
+                {
+                  "name": "installR",
+                  "uri": "https://hdiconfigactions.blob.core.windows.net/linuxrconfigactionv01/r-installer-v01.sh",
+                  "parameters": ""
+                },
+                {
+                  "name": "worker_installs",
+                  "uri": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/master/worker_installs.sh",
+                  "parameters": ""
+                }
+              ]
             }
           ]
         }
