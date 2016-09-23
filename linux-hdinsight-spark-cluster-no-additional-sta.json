@@ -190,7 +190,7 @@
                   "parameters": ""
                 },
                 {
-                  "name": "install_SparklingWater",
+                  "name": "driver_installs",
                   "uri": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/master/driver_installs.sh",
                   "parameters": "[concat(parameters('clusterWorkerNodeCount'), ' ', parameters('sshUserName'))]"
                 }
