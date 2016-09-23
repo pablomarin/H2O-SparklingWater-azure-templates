@@ -6,6 +6,15 @@ echo "Changing to user folder ..."
 cd /home/$2/
 wait 
 
+#Libraries needed on the worker roles in order to get pysparkling working
+pip install -U requests
+pip install -U tabulate
+pip install -U future
+pip install -U six
+
+#Scikit Learn on the nodes
+pip install -U scikit-learn
+
 # Adjust based on the build of H2O you want to download.
 version=1.6
 SparklingBranch=rel-${version}
