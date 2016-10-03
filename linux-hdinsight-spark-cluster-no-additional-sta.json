@@ -67,7 +67,7 @@
     },
     "clusterHeadNodeCount": {
       "type": "int",
-      "defaultValue": 2,
+      "defaultValue": 1,
       "metadata": {
         "description": "The number of head nodes in the HDInsight Spark cluster."
       }
@@ -93,7 +93,7 @@
     },
     "clusterWorkerNodeCount": {
       "type": "int",
-      "defaultValue": 2,
+      "defaultValue": 3,
       "metadata": {
         "description": "The number of worker nodes in the HDInsight Spark cluster."
       }
@@ -121,7 +121,7 @@
   "variables": {
     "defaultApiVersion": "2015-05-01-preview",
     "clusterApiVersion": "2015-03-01-preview",
-    "clusterVersion": "3.4",
+    "clusterVersion": "3.5",
     "clusterOSType": "Linux",
 
     "storageAccountName": "[uniqueString(concat(parameters('clusterName'), resourceGroup().id))]",
