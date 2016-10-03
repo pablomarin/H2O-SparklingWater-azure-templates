@@ -153,7 +153,7 @@
   "variables": {
     "defaultApiVersion": "2015-05-01-preview",
     "clusterApiVersion": "2015-03-01-preview",
-    "clusterVersion": "3.4",
+    "clusterVersion": "3.5",
     "clusterOSType": "Linux",
 
     "deploymentLink_Yes": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/master/linux-hdinsight-spark-cluster-additional-sta.json",
