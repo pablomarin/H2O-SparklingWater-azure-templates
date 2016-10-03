@@ -31,7 +31,7 @@
     },
     "clusterLoginUserName": {
       "type": "string",
-      "defaultValue": "admin",
+      "defaultValue": "hdiadmin",
       "metadata": {
         "description": "These credentials can be used to submit jobs to the cluster and to log into cluster dashboards."
       }
@@ -209,11 +209,6 @@
                 }
               },
               "scriptActions": [
-                {
-                  "name": "installR",
-                  "uri": "https://hdiconfigactions.blob.core.windows.net/linuxrconfigactionv01/r-installer-v01.sh",
-                  "parameters": ""
-                },
                 {
                   "name": "worker_installs",
                   "uri": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/master/worker_installs.sh",
