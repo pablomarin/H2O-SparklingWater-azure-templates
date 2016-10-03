@@ -31,7 +31,7 @@
     },
     "clusterLoginUserName": {
       "type": "string",
-      "defaultValue": "admin",
+      "defaultValue": "hdiadmin",
       "metadata": {
         "description": "These credentials can be used to submit jobs to the cluster and to log into cluster dashboards."
       }
@@ -67,7 +67,7 @@
     },
     "clusterHeadNodeCount": {
       "type": "int",
-      "defaultValue": 2,
+      "defaultValue": 1,
       "metadata": {
         "description": "The number of head nodes in the HDInsight Spark cluster."
       }
@@ -93,7 +93,7 @@
     },
     "clusterWorkerNodeCount": {
       "type": "int",
-      "defaultValue": 2,
+      "defaultValue": 3,
       "metadata": {
         "description": "The number of worker nodes in the HDInsight Spark cluster."
       }
