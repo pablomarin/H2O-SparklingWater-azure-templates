@@ -38,6 +38,11 @@ export SPARKLING_HOME="/home/$2/sparkling-water-${version}.${h2oBuild}"
 export MASTER="yarn-client"
 wait
 
+echo "Installing Azure Cli ..."
+sudo apt install npm
+wait
+
+
 echo "Running sparkling-water-${version}.${h2oBuild}"
 # Get the available RAM in GB and Number of cores
 memTotalKb=`cat /proc/meminfo | grep MemTotal | sed 's/MemTotal:[ \t]*//' | sed 's/ kB//'`
