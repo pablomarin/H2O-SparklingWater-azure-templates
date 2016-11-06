@@ -22,7 +22,6 @@ SparklingBranch=rel-${version}
 echo "Fetching latest build number for branch ${SparklingBranch}..."
 curl --silent -o latest https://h2o-release.s3.amazonaws.com/sparkling-water/${SparklingBranch}/latest
 h2oBuild=`cat latest`
-h2oBuild=5
 wait
 
 echo "Downloading Sparkling Water version ${version}.${h2oBuild} ..."
@@ -38,8 +37,8 @@ export SPARKLING_HOME="/home/$2/sparkling-water-${version}.${h2oBuild}"
 export MASTER="yarn-client"
 wait
 
-echo "Installing Azure Cli ..."
-sudo apt install npm
+echo "Copying Sparkling folder to default storage account"
+hdfs dfs -copyFromLocal "/home/$2/sparkling-water-${version}.${h2oBuild}/" "/HdiNotebooks/sparkling-water-${version}.${h2oBuild}"
 wait
 
 
