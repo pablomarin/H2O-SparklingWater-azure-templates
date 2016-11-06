@@ -38,7 +38,7 @@ export MASTER="yarn-client"
 wait
 
 echo "Copying Sparkling folder to default storage account"
-hdfs dfs -copyFromLocal "/home/$2/sparkling-water-${version}.${h2oBuild}/" "/HdiNotebooks/sparkling-water-${version}.${h2oBuild}"
+hdfs dfs -copyFromLocal "/home/$2/sparkling-water-${version}.${h2oBuild}/" "/HdiNotebooks/Sparkling"
 wait
 
 
