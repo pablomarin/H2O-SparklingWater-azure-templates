@@ -3,6 +3,9 @@ ARM Template that creates a HDInsight Spark cluster and installs H2O Sparkling w
 
 >This repo uses an ARM template to create a Spark cluster with H2O Sparkling Water installed on it, that uses [Azure Storage Blobs as the cluster storage](hdinsight-hadoop-use-blob-storage.md). You can also create a Spark cluster that uses [Azure Data Lake Store](../data-lake-store/data-lake-store-overview.md) as an additional storage, in addition to Azure Storage Blobs as the default storage. For instructions, see [Create an HDInsight cluster with Data Lake Store](../data-lake-store/data-lake-store-hdinsight-hadoop-use-portal.md).
 
+![Sparkling architecture](http://www.ibmbigdatahub.com/sites/default/files/quality_of_life_fig_1.jpg)
+
+
 ## Create Sparkling Water cluster
 
 Azure Blob storage is a robust, general-purpose storage solution that integrates seamlessly with HDInsight. Through a Hadoop distributed file system (HDFS) interface, the full set of components in HDInsight can operate directly on structured or unstructured data in Blob storage.
@@ -70,6 +73,9 @@ In this section, you create an HDInsight version 3.4 cluster (Spark version 1.6.
 6.Click **Create**. You will see a new tile titled Submitting deployment for Template deployment. It takes about around 20 minutes to create the cluster and SQL database.
 
 ## Run Spark SQL queries using a Jupyter notebook
+
+
+![HDI architecture](https://github.com/pablomarin/SparklingWater-azure-template-work-in-progress-/blob/master/images/hdi-arch.png?raw=true)
 
 In this section, you use Jupyter notebook to run Spark SQL queries against the Spark cluster. HDInsight Spark clusters provide two kernels that you can use with the Jupyter notebook. These are:
 
