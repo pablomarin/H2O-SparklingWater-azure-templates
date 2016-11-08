@@ -79,14 +79,9 @@
         "Standard_D3_v2",
         "Standard_D4_v2",
         "Standard_D5_v2",
-        "Standard_D11_v2",
         "Standard_D12_v2",
         "Standard_D13_v2",
-        "Standard_D14_v2",
-        "Standard_D15_v2",
-        "Standard_D3",
-        "Standard_D4",
-        "Standard_D5"
+        "Standard_D14_v2"
       ],
       "metadata": {
         "description": "The size of the head nodes in the HDInsight Spark cluster."
@@ -103,20 +98,12 @@
       "type": "string",
       "defaultValue": "Standard_D3_v2",
       "allowedValues": [
-        "Standard_D1_v2",
-        "Standard_D2_v2",
         "Standard_D3_v2",
         "Standard_D4_v2",
         "Standard_D5_v2",
         "Standard_D12_v2",
         "Standard_D13_v2",
-        "Standard_D14_v2",
-        "Standard_D15_v2",
-        "Standard_D1",
-        "Standard_D2",
-        "Standard_D3",
-        "Standard_D4",
-        "Standard_D5"
+        "Standard_D14_v2"
       ],
       "metadata": {
         "description": "The size of the head nodes in the HDInsight Spark cluster."
