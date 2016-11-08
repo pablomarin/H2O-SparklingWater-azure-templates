@@ -7,13 +7,13 @@ cd /home/$2/
 wait 
 
 #Libraries needed on the worker roles in order to get pysparkling working
-pip install -U requests
-pip install -U tabulate
-pip install -U future
-pip install -U six
+/usr/bin/anaconda/bin/pip install -U requests
+/usr/bin/anaconda/bin/pip install -U tabulate
+/usr/bin/anaconda/bin/pip install -U future
+/usr/bin/anaconda/bin/pip install -U six
 
 #Scikit Learn on the nodes
-pip install -U scikit-learn
+/usr/bin/anaconda/bin/pip install -U scikit-learn
 
 # Adjust based on the build of H2O you want to download.
 version=1.6
@@ -38,7 +38,7 @@ export MASTER="yarn-client"
 wait
 
 echo "Copying Sparkling folder to default storage account"
-hdfs dfs -copyFromLocal "/home/$2/sparkling-water-${version}.${h2oBuild}/" "/HdiNotebooks/Sparkling"
+hdfs dfs -copyFromLocal "/home/$2/sparkling-water-${version}.${h2oBuild}/" "/HdiNotebooks/H2O-Sparkling-Water"
 wait
 
 
