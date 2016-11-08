@@ -5,6 +5,32 @@ ARM Template that creates a HDInsight Spark cluster and installs H2O Sparkling w
 
 ## Create Sparkling Water cluster
 
+Azure Blob storage is a robust, general-purpose storage solution that integrates seamlessly with HDInsight. Through a Hadoop distributed file system (HDFS) interface, the full set of components in HDInsight can operate directly on structured or unstructured data in Blob storage.
+
+Storing data in Blob storage enables you to safely delete the HDInsight clusters that are used for computation without losing user data.
+
+HDInsight provides access to the distributed file system that is locally attached to the compute nodes. This file system can be accessed by using the fully qualified URI, for example:
+
+	hdfs://<namenodehost>/<path>
+
+In addition, HDInsight provides the ability to access data that is stored in Azure Blob storage. The syntax is:
+
+	wasb[s]://<containername>@<accountname>.blob.core.windows.net/<path>
+
+Hadoop supports a notion of the default file system. The default file system implies a default scheme and authority. It can also be used to resolve relative paths. During the HDInsight creation process, an Azure Storage account and a specific Azure Blob storage container from that account is designated as the default file system.
+
+For the files on the default file system, you can use a relative path or an absolute path. For example, the *hadoop-mapreduce-examples.jar* file that comes with HDInsight clusters can be referred to by using one of the following:
+
+	wasbs://mycontainer@myaccount.blob.core.windows.net/example/jars/hadoop-mapreduce-examples.jar
+	wasbs:///example/jars/hadoop-mapreduce-examples.jar
+	/example/jars/hadoop-mapreduce-examples.jar
+
+In addition to this storage account, you can add additional storage accounts from the same Azure subscription or different Azure subscriptions during the creation process or after a cluster has been created. For instructions about adding additional storage accounts, see [Create HDInsight clusters][hdinsight-creation].
+
+	Most HDFS commands (for example, <b>ls</b>, <b>copyFromLocal</b> and <b>mkdir</b>) still work as expected. Only the commands that are specific to the native HDFS implementation (which is referred to as DFS), such as <b>fschk</b> and <b>dfsadmin</b>, will show different behavior in Azure Blob storage.
+
+![Create a new Jupyter notebook](https://acom.azurecomcdn.net/80C57D/cdn/mediahandler/docarticles/dpsmedia-prod/azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-use-blob-storage/20160913101040/hdi.wasb.arch.png "HDInsight uses blob storage")
+
 In this section, you create an HDInsight version 3.4 cluster (Spark version 1.6.1) using an Azure ARM template. For information about HDInsight versions and their SLAs, see [HDInsight component versioning](hdinsight-component-versioning.md). For other cluster creation methods, see [Create HDInsight clusters](hdinsight-hadoop-provision-linux-clusters.md).
 
 1. Click the following image to open an ARM template in the Azure Portal.         
