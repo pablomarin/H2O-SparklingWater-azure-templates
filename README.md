@@ -30,7 +30,7 @@ It takes about around 20 minutes to create the cluster and SQL database.
 
 ## Azure HDInsight Architecture
 
-![HDI architecture](https://github.com/pablomarin/SparklingWater-azure-template-work-in-progress-/blob/master/imageS/hdi-arch.png?raw=true)
+!(https://github.com/pablomarin/SparklingWater-azure-template-work-in-progress-/blob/master/imageS/hdi-arch.png?raw=true)
 
 Hadoop supports a notion of the default file system. The default file system implies a default scheme and authority. It can also be used to resolve relative paths. During the HDInsight creation process, an Azure Storage account and a specific Azure Blob storage container from that account is designated as the default file system.
 
@@ -61,11 +61,6 @@ Only the data on the linked storage account and the external hive meta-store wil
 Azure Blob storage is a robust, general-purpose storage solution that integrates seamlessly with HDInsight. Through a Hadoop distributed file system (HDFS) interface, the full set of components in HDInsight can operate directly on structured or unstructured data in Blob storage.
 
 Storing data in Blob storage enables you to safely delete the HDInsight clusters that are used for computation without losing user data.
-
-
-
-
-
 
 
 In addition to this storage account, you can add additional storage accounts from the same Azure subscription or different Azure subscriptions during the creation process or after a cluster has been created. For instructions about adding additional storage accounts, see [Create HDInsight clusters][hdinsight-creation].
