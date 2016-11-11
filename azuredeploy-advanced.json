@@ -50,14 +50,13 @@
         "description": "The Spark version to be installed on the cluster."
       },
       "allowedValues": [
-        "1.6",
-        "2.0"
+        "1.6"
       ],
-      "defaultValue": "2.0"
+      "defaultValue": "1.6"
     },
     "clusterHeadNodeCount": {
       "type": "int",
-      "defaultValue": 1,
+      "defaultValue": 2,
       "metadata": {
         "description": "The number of head nodes in the HDInsight Spark cluster."
       }
