@@ -4,12 +4,16 @@ The goal of this repo is to provide an easy (click-and-go) way to deploy H2O Spa
 
 There are two kind of templates offered on this repo.
 
-1. Simple:
+1. Simple: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2Fmaster%2Fazuredeploy-simple.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
 	- HDInsight 3.5
 	- Spark 1.6.2
 	- Latest version of H2O Sparkling water 
 	- VNet with NSG (Network Security Group)
-2. Advanced:
+2. Advanced: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2Fmaster%2Fazuredeploy-advanced.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
 	- HDInsight 3.5
 	- Spark 1.6.2
 	- Latest version of H2O Sparkling water 
@@ -17,14 +21,6 @@ There are two kind of templates offered on this repo.
 	- Additional data source (Linked Storage Account)
 	- External Hive/Oozie Metastore (SQL Database)
 	
-
-## Click the following buttons to deploy the ARM templates in the Azure Portal.         
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2Fmaster%2Fazuredeploy.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
-  
-
 It takes about around 20 minutes to create the cluster and SQL database.
 
 
