@@ -30,7 +30,7 @@ It takes about around 20 minutes to create the cluster and SQL database.
 
 ## Azure HDInsight Architecture
 
-!(https://github.com/pablomarin/SparklingWater-azure-template-work-in-progress-/blob/master/imageS/hdi-arch.png?raw=true)
+![HDI arch](https://acom.azurecomcdn.net/80C57D/cdn/mediahandler/docarticles/dpsmedia-prod/azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-use-blob-storage/20160913101040/hdi.wasb.arch.png)
 
 Hadoop supports a notion of the default file system. The default file system implies a default scheme and authority. It can also be used to resolve relative paths. During the HDInsight creation process, an Azure Storage account and a specific Azure Blob storage container from that account is designated as the default file system.
 
@@ -40,15 +40,17 @@ For the files on the default file system, you can use a relative path or an abso
 	wasbs:///example/jars/hadoop-mapreduce-examples.jar
 	/example/jars/hadoop-mapreduce-examples.jar
 
-In addition, HDInsight provides the ability to access data that is stored in Azure Blob storage (Linked Storage Account). Normally this is where your big data resides. The syntax is:
+In addition to this storage account, you can add additional storage accounts from the same Azure subscription or different Azure subscriptions during the creation process or after a cluster has been created. For instructions about adding additional storage accounts. Normally this is where your big data resides. The syntax is:
 
 	wasb[s]://<containername>@<accountname>.blob.core.windows.net/<path>
 	
 HDInsight provides  also access to the distributed file system that is locally attached to the compute nodes (disks on the cluster nodes). You can use this as a local cache. Remember that this file system is gone once you delete the cluster. This file system can be accessed by using the fully qualified URI, for example:
 
 	hdfs://<namenodehost>/<path>
+	
+Most HDFS commands (for example, <b>ls</b>, <b>copyFromLocal</b> and <b>mkdir</b>) still work as expected. Only the commands that are specific to the native HDFS implementation (which is referred to as DFS), such as <b>fschk</b> and <b>dfsadmin</b>, will show different behavior in Azure Blob storage.
 
-Only the data on the linked storage account and the external hive meta-store will persist after the cluster is deleted. MAKE SURE YOU DO NOT STORE YOUR IMPORTANT DATA ON THE DEFAULT STORAGE ACCOUNT CREATED BY THE CLUSTER.
+Only the data on the linked storage account and the external hive meta-store will persist after the cluster is deleted. <b>MAKE SURE YOU DO NOT STORE YOUR IMPORTANT DATA ON THE DEFAULT STORAGE ACCOUNT CREATED BY THE CLUSTER</b>.
 
 
 ## H2O Sparkling Water Architecture
@@ -56,40 +58,51 @@ Only the data on the linked storage account and the external hive meta-store wil
 ![Sparkling architecture](http://www.ibmbigdatahub.com/sites/default/files/quality_of_life_fig_1.jpg)
 
 
-## Create Sparkling Water cluster
 
-Azure Blob storage is a robust, general-purpose storage solution that integrates seamlessly with HDInsight. Through a Hadoop distributed file system (HDFS) interface, the full set of components in HDInsight can operate directly on structured or unstructured data in Blob storage.
-
-Storing data in Blob storage enables you to safely delete the HDInsight clusters that are used for computation without losing user data.
-
-
-In addition to this storage account, you can add additional storage accounts from the same Azure subscription or different Azure subscriptions during the creation process or after a cluster has been created. For instructions about adding additional storage accounts, see [Create HDInsight clusters][hdinsight-creation].
-
-	Most HDFS commands (for example, <b>ls</b>, <b>copyFromLocal</b> and <b>mkdir</b>) still work as expected. Only the commands that are specific to the native HDFS implementation (which is referred to as DFS), such as <b>fschk</b> and <b>dfsadmin</b>, will show different behavior in Azure Blob storage.
-
-![Create a new Jupyter notebook](https://acom.azurecomcdn.net/80C57D/cdn/mediahandler/docarticles/dpsmedia-prod/azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-use-blob-storage/20160913101040/hdi.wasb.arch.png "HDInsight uses blob storage")
-
-In this section, you create an HDInsight version 3.4 cluster (Spark version 1.6.1) using an Azure ARM template. For information about HDInsight versions and their SLAs, see [HDInsight component versioning](hdinsight-component-versioning.md). For other cluster creation methods, see [Create HDInsight clusters](hdinsight-hadoop-provision-linux-clusters.md).
-
-
-
-## Run Spark SQL queries using a Jupyter notebook
-
-
-
+## Create Jupyter notebook with PySpark kernel 
 
 In this section, you use Jupyter notebook to run Spark SQL queries against the Spark cluster. HDInsight Spark clusters provide two kernels that you can use with the Jupyter notebook. These are:
 
 * **PySpark** (for applications written in Python)
 * **Spark** (for applications written in Scala)
 
-In this article, you will use the PySpark kernel. In the article [Kernels available on Jupyter notebooks with Spark HDInsight clusters](hdinsight-apache-spark-jupyter-notebook-kernels.md#why-should-i-use-the-new-kernels) you can read in detail about the benefits of using the PySpark kernel. However, couple of key benefits of using the PySpark kernel are:
+In this article, you will use the PySpark kernel. Couple of key benefits of using the PySpark kernel are:
 
 * You do not need to set the contexts for Spark and Hive. These are automatically set for you.
 * You can use cell magics, such as `%%sql`, to directly run your SQL or Hive queries, without any preceding code snippets.
 * The output for the SQL or Hive queries is automatically visualized.
 
-### Tips for Executor memory allocation 
+
+1. From the [Azure Portal](https://portal.azure.com/), from the startboard, click the tile for your Spark cluster (if you pinned it to the startboard). You can also navigate to your cluster under **Browse All** > **HDInsight Clusters**.   
+
+2. From the Spark cluster blade, click **Quick Links**, and then from the **Cluster Dashboard** blade, click **Jupyter Notebook**. If prompted, enter the admin credentials for the cluster.
+
+	> you may also reach the Jupyter Notebook for your cluster by opening the following URL in your browser. Replace __CLUSTERNAME__ with the name of your cluster:
+	>
+	> `https://CLUSTERNAME.azurehdinsight.net/jupyter`
+
+
+## Where are the notebooks stored?
+
+Jupyter notebooks are saved to the storage account associated with the cluster under the **/HdiNotebooks** folder.  Notebooks, text files, and folders that you create from within Jupyter will be accessible from WASB.  For example, if you use Jupyter to create a folder **myfolder** and a notebook **myfolder/mynotebook.ipynb**, you can access that notebook at `wasbs:///HdiNotebooks/myfolder/mynotebook.ipynb`.  The reverse is also true, that is, if you upload a notebook directly to your storage account at `/HdiNotebooks/mynotebook1.ipynb`, the notebook will be visible from Jupyter as well.  Notebooks will remain in the storage account even after the cluster is deleted.
+
+The way notebooks are saved to the storage account is compatible with HDFS. So, if you SSH into the cluster you can use file management commands like the following:
+
+	hdfs dfs -ls /HdiNotebooks             				  # List everything at the root directory – everything in this directory is visible to Jupyter from the home page
+	hdfs dfs –copyToLocal /HdiNotebooks    				# Download the contents of the HdiNotebooks folder
+	hdfs dfs –copyFromLocal example.ipynb /HdiNotebooks   # Upload a notebook example.ipynb to the root folder so it’s visible from Jupyter
+
+
+In case there are issues accessing the storage account for the cluster, the notebooks are also saved on the headnode `/var/lib/jupyter`.
+
+
+
+## Delete the cluster
+
+To delete the Sparkling Water Cluster, go to the portal and delete the Resource Group.
+
+## Tips for Executor memory allocation 
+
 Assume there are 6 nodes available on a cluster with 25 core nodes and 125 GB memory per node. It is natural to try to utilize those resources as much as possible for your Sparkling Water application, before considering requesting more nodes (which might result in longer wait times in the queue and overall longer times to get the result). 
 
 With YARN, a possible approach would be to use --num-executors 6 --executor-cores 24 --executor-memory 124G. Here, we subtracted 1 core and some memory per node to allow for operating system and/or cluster specific daemons to run. However, this approach would be not be optimal, because large number of cores per executor leads to HDFS I/O throughput and thus significantly slow down the application. Allocating a similar number of cores would be possible by increasing the number of executors and decreasing the number of executor-cores and memory.
@@ -106,34 +119,10 @@ executor-cores = usable_cores / n<br>
 executor-memory = usable_mem * 0.97 / n <br>
 
 
-### Create Jupyter notebook with PySpark kernel 
-
-1. From the [Azure Portal](https://portal.azure.com/), from the startboard, click the tile for your Spark cluster (if you pinned it to the startboard). You can also navigate to your cluster under **Browse All** > **HDInsight Clusters**.   
-
-2. From the Spark cluster blade, click **Quick Links**, and then from the **Cluster Dashboard** blade, click **Jupyter Notebook**. If prompted, enter the admin credentials for the cluster.
-
-	> ou may also reach the Jupyter Notebook for your cluster by opening the following URL in your browser. Replace __CLUSTERNAME__ with the name of your cluster:
-	>
-	> `https://CLUSTERNAME.azurehdinsight.net/jupyter`
-
-##Delete the cluster
-
-To delete the Sparkling Water Cluster, go to the portal and delete the Resource Group.
-
-## Where are the notebooks stored?
-
-Jupyter notebooks are saved to the storage account associated with the cluster under the **/HdiNotebooks** folder.  Notebooks, text files, and folders that you create from within Jupyter will be accessible from WASB.  For example, if you use Jupyter to create a folder **myfolder** and a notebook **myfolder/mynotebook.ipynb**, you can access that notebook at `wasbs:///HdiNotebooks/myfolder/mynotebook.ipynb`.  The reverse is also true, that is, if you upload a notebook directly to your storage account at `/HdiNotebooks/mynotebook1.ipynb`, the notebook will be visible from Jupyter as well.  Notebooks will remain in the storage account even after the cluster is deleted.
-
-The way notebooks are saved to the storage account is compatible with HDFS. So, if you SSH into the cluster you can use file management commands like the following:
-
-	hdfs dfs -ls /HdiNotebooks             				  # List everything at the root directory – everything in this directory is visible to Jupyter from the home page
-	hdfs dfs –copyToLocal /HdiNotebooks    				# Download the contents of the HdiNotebooks folder
-	hdfs dfs –copyFromLocal example.ipynb /HdiNotebooks   # Upload a notebook example.ipynb to the root folder so it’s visible from Jupyter
 
 
-In case there are issues accessing the storage account for the cluster, the notebooks are also saved on the headnode `/var/lib/jupyter`.
 
-### Data source###
+### Data source ###
 
 The original Hadoop distributed file system (HDFS) uses many local disks on the cluster. HDInsight uses Azure Blob storage for data storage. Azure Blob storage is a robust, general-purpose storage solution that integrates seamlessly with HDInsight. Through an HDFS interface, the full set of components in HDInsight can operate directly on structured or unstructured data in Blob storage. Storing data in Blob storage helps you safely delete the HDInsight clusters that are used for computation without losing user data.
 
