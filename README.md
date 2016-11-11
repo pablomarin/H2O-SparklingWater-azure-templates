@@ -21,7 +21,7 @@ There are two kind of templates offered on this repo.
 	- Additional data source (Linked Storage Account)
 	- External Hive/Oozie Metastore (SQL Database)
 	
-It takes about around 20 minutes to create the cluster and SQL database.
+It takes about 20 minutes to create the cluster.
 
 
 ## Azure HDInsight Architecture
@@ -36,7 +36,7 @@ For the files on the default file system, you can use a relative path or an abso
 	wasbs:///example/jars/hadoop-mapreduce-examples.jar
 	/example/jars/hadoop-mapreduce-examples.jar
 
-In addition to this storage account, you can add additional storage accounts (<b>Advanced Template)</b> from the same Azure subscription or different Azure subscriptions during the creation process or after a cluster has been created. For instructions about adding additional storage accounts. <b>Normally this is where your big data resides</b>. The syntax is:
+In addition to this storage account, you can add additional storage accounts (<b>Advanced Template)</b> from the same Azure subscription or different Azure subscriptions during the creation process or after a cluster has been created. Note that the additional storage account must be in the same region thatn the HDI cluster. <b>Normally this is where your big data resides</b>. The syntax is:
 
 	wasb[s]://<containername>@<accountname>.blob.core.windows.net/<path>
 	
@@ -55,6 +55,12 @@ Only the data on the linked storage account and the external hive meta-store wil
 
 Both templates will automatically download the latest version of Sparkling Water compatible with Spark 1.6.2.
 It will also copy the sparkling water folder on the default storage under /HDINotebooks/Sparkling/.
+
+H2O can be installed as a standalone cluster, on top of YARN, and on top of spark on top of YARN.
+Both templates introduced in this repo install H2O on top of Spark on top of YARN => Sparkling Water on YARN.
+
+Note that all spark applications deployed using a Jupyter Notebook will have "yarn-cluster" deploy-mode. This means that the sparkling water driver can be allocated on any node of the cluster, not necessarily on the head node.
+
 
 
 ## Create Jupyter notebook with PySpark kernel 
@@ -100,23 +106,24 @@ In case there are issues accessing the storage account for the cluster, the note
 To delete the Sparkling Water Cluster, go to the portal and delete the Resource Group.
 
 
+
 ## Data source
 
 The original Hadoop distributed file system (HDFS) uses many local disks on the cluster. HDInsight uses Azure Blob storage for data storage. Azure Blob storage is a robust, general-purpose storage solution that integrates seamlessly with HDInsight. Through an HDFS interface, the full set of components in HDInsight can operate directly on structured or unstructured data in Blob storage. Storing data in Blob storage helps you safely delete the HDInsight clusters that are used for computation without losing user data.
 
 During configuration, you must specify an Azure storage account and an Azure Blob storage container on the Azure storage account. The Blob storage container is used as the default storage location by the cluster. Optionally, you can specify additional Azure Storage accounts (linked storage) that will be accessible by the cluster. The cluster can also access any Blob storage containers that are configured with full public read access or public read access for blobs only. 
 
-![HDInsight storage](http://www.developer.com/imagesvr_ce/3363/Hive1.png)
-
 It is not recommended using the default Blob storage container for storing business data. Deleting the default Blob storage container after each use to reduce storage cost is a good practice. Note that the default container contains application and system logs. Make sure to retrieve the logs before deleting the container.
 
 
-## Use additional storage - Template 2
+## Use additional storage - Advanced Template
 
 In some cases, you may wish to add additional storage to the cluster. For example, you might have multiple Azure storage accounts for different geographical regions or different services, but you want to analyze them all with HDInsight.
 
 
 ##<a name="next-steps"></a>What components are included as part of a Spark cluster?
+
+![hdi-arch](https://github.com/pablomarin/SparklingWater-azure-template-work-in-progress-/blob/master/images/hdi-arch.png?raw=true)
 
 Spark in HDInsight includes the following components that are available on the clusters by default.
 
@@ -128,7 +135,7 @@ Spark in HDInsight includes the following components that are available on the c
 Spark in HDInsight also provides an [ODBC driver](http://go.microsoft.com/fwlink/?LinkId=616229) for connectivity to Spark clusters in HDInsight from BI tools such as Microsoft Power BI and Tableau.
 
 
-## Use Hive/Oozie metastore - - Template 2
+## Use Hive/Oozie metastore - Advanced Template
 
 We strongly recommend that you use a custom metastore if you want to retain your Hive tables after you delete your HDInsight cluster. You will be able to attach that metastore to another HDInsight cluster.
 
