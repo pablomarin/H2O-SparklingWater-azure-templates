@@ -174,10 +174,26 @@
     "workerNodeSubnetAddressRange": "192.168.1.0/24",
     "virtualNetworkId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
 
+    "flowIpName": "ClusterFlowIP",
+    "flowIpType": "Dynamic",
+    "flowIpDomainNameLabel": "[concat(toLower(parameters('clusterName')), 'flow-ip', substring(uniqueString(resourceGroup().id), 0, 10))]",
+
     "dbServerHost": "[concat(parameters('databaseServerName'), '.database.windows.net')]",
     "dbConnectionUrl": "[concat(variables('dbServerHost'), ';database=', parameters('databaseName'), ';encrypt=true;trustServerCertificate=true;create=false;loginTimeout=300')]"
   },
   "resources": [
+    {
+      "apiVersion": "[variables('defaultApiVersion')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('flowIpName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "[variables('flowIpType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('flowIpDomainNameLabel')]"
+        }
+      }
+    },
     {
       "name": "[variables('storageAccountName')]",
       "type": "Microsoft.Storage/storageAccounts",
@@ -349,17 +365,13 @@
     }
   ],
   "outputs": {
-    "vnet": {
-      "type": "object",
-      "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName')))]"
-    },
-    "cluster": {
-      "type": "object",
-      "value": "[reference(resourceId('Microsoft.HDInsight/clusters', parameters('clusterName')))]"
-    },
-    "clusterFQDN": {
+    "flowIpName": {
       "type": "string",
-      "value": "[concat('https://', parameters('clusterName'), '.azurehdinsight.net')]"
+      "value": "[variables('flowIpName')]"
+    },
+    "flowIpDns": {
+      "type": "string",
+      "value": "[concat(variables('flowIpDomainNameLabel'), '.', resourceGroup().location, '.cloudapp.azure.com')]"
     }
   }
 }
