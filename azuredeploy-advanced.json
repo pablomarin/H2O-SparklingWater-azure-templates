@@ -133,7 +133,7 @@
     "databaseServerName": {
       "type": "string",
       "metadata": {
-        "description": "The linked Azure SQL database server name."
+        "description": "The linked Azure SQL database server name. It must be of the form *.database.windows.net"
       }
     },
     "databaseName": {
