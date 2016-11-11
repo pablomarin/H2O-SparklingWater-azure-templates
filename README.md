@@ -1,7 +1,57 @@
 # SparklingWater-azure-template
-ARM Template that creates a HDInsight Spark cluster and installs H2O Sparkling water on it
 
->This repo uses an ARM template to create a Spark cluster with H2O Sparkling Water installed on it, that uses [Azure Storage Blobs as the cluster storage](hdinsight-hadoop-use-blob-storage.md). You can also create a Spark cluster that uses [Azure Data Lake Store](../data-lake-store/data-lake-store-overview.md) as an additional storage, in addition to Azure Storage Blobs as the default storage. For instructions, see [Create an HDInsight cluster with Data Lake Store](../data-lake-store/data-lake-store-hdinsight-hadoop-use-portal.md).
+The goal of this repo is to provide an easy (click-and-go) way to deploy H2O Sparkling Water clusters on Microsoft Azure.
+
+There are two kind of templates offered on this repo.
+
+1. Simple:
+	- HDInsight 3.5
+	- Spark 1.6.2
+	- Latest version of H2O Sparkling water 
+	- VNet with NSG (Network Security Group)
+2. Advanced:
+	- HDInsight 3.5
+	- Spark 1.6.2
+	- Latest version of H2O Sparkling water 
+	- VNet with NSG (Network Security Group)
+	- Additional data source (Linked Storage Account)
+	- External Hive/Oozie Metastore (SQL Database)
+	
+
+## Click the following buttons to deploy the ARM templates in the Azure Portal.         
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2Fmaster%2Fazuredeploy.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
+  
+
+It takes about around 20 minutes to create the cluster and SQL database.
+
+
+## Azure HDInsight Architecture
+
+![HDI architecture](https://github.com/pablomarin/SparklingWater-azure-template-work-in-progress-/blob/master/imageS/hdi-arch.png?raw=true)
+
+Hadoop supports a notion of the default file system. The default file system implies a default scheme and authority. It can also be used to resolve relative paths. During the HDInsight creation process, an Azure Storage account and a specific Azure Blob storage container from that account is designated as the default file system.
+
+For the files on the default file system, you can use a relative path or an absolute path. For example, the *hadoop-mapreduce-examples.jar* file that comes with HDInsight clusters can be referred to by using one of the following:
+
+	wasbs://mycontainer@myaccount.blob.core.windows.net/example/jars/hadoop-mapreduce-examples.jar
+	wasbs:///example/jars/hadoop-mapreduce-examples.jar
+	/example/jars/hadoop-mapreduce-examples.jar
+
+In addition, HDInsight provides the ability to access data that is stored in Azure Blob storage (Linked Storage Account). Normally this is where your big data resides. The syntax is:
+
+	wasb[s]://<containername>@<accountname>.blob.core.windows.net/<path>
+	
+HDInsight provides  also access to the distributed file system that is locally attached to the compute nodes (disks on the cluster nodes). You can use this as a local cache. Remember that this file system is gone once you delete the cluster. This file system can be accessed by using the fully qualified URI, for example:
+
+	hdfs://<namenodehost>/<path>
+
+Only the data on the linked storage account and the external hive meta-store will persist after the cluster is deleted. MAKE SURE YOU DO NOT STORE YOUR IMPORTANT DATA ON THE DEFAULT STORAGE ACCOUNT CREATED BY THE CLUSTER.
+
+
+## H2O Sparkling Water Architecture
 
 ![Sparkling architecture](http://www.ibmbigdatahub.com/sites/default/files/quality_of_life_fig_1.jpg)
 
@@ -12,21 +62,11 @@ Azure Blob storage is a robust, general-purpose storage solution that integrates
 
 Storing data in Blob storage enables you to safely delete the HDInsight clusters that are used for computation without losing user data.
 
-HDInsight provides access to the distributed file system that is locally attached to the compute nodes. This file system can be accessed by using the fully qualified URI, for example:
 
-	hdfs://<namenodehost>/<path>
 
-In addition, HDInsight provides the ability to access data that is stored in Azure Blob storage. The syntax is:
 
-	wasb[s]://<containername>@<accountname>.blob.core.windows.net/<path>
 
-Hadoop supports a notion of the default file system. The default file system implies a default scheme and authority. It can also be used to resolve relative paths. During the HDInsight creation process, an Azure Storage account and a specific Azure Blob storage container from that account is designated as the default file system.
 
-For the files on the default file system, you can use a relative path or an absolute path. For example, the *hadoop-mapreduce-examples.jar* file that comes with HDInsight clusters can be referred to by using one of the following:
-
-	wasbs://mycontainer@myaccount.blob.core.windows.net/example/jars/hadoop-mapreduce-examples.jar
-	wasbs:///example/jars/hadoop-mapreduce-examples.jar
-	/example/jars/hadoop-mapreduce-examples.jar
 
 In addition to this storage account, you can add additional storage accounts from the same Azure subscription or different Azure subscriptions during the creation process or after a cluster has been created. For instructions about adding additional storage accounts, see [Create HDInsight clusters][hdinsight-creation].
 
@@ -36,46 +76,12 @@ In addition to this storage account, you can add additional storage accounts fro
 
 In this section, you create an HDInsight version 3.4 cluster (Spark version 1.6.1) using an Azure ARM template. For information about HDInsight versions and their SLAs, see [HDInsight component versioning](hdinsight-component-versioning.md). For other cluster creation methods, see [Create HDInsight clusters](hdinsight-hadoop-provision-linux-clusters.md).
 
-1. Click the following image to open an ARM template in the Azure Portal.         
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2Fmaster%2Fazuredeploy.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2Fmaster%2Fazuredeploy.json" target="_blank">
-    <img src="http://armviz.io/visualizebutton.png"/>
-</a>
-    
-    
-2. From the Parameters blade, enter the following:
-
-    - **ClusterName**: Enter a name for the Hadoop cluster that you will create.
-    - **Cluster login name and password**: The default login name is admin.
-    - **SSH user name and password**.
-    
-    Please write down these values.  You will need them later in the tutorial.
-
-    > SSH is used to remotely access the HDInsight cluster using a command-line. The user name and password you use here is used when connecting to the cluster through SSH. Also, the SSH user name must be unique, as it creates a user account on all the HDInsight cluster nodes. The following are some of the account names reserved for use by services on the cluster, and cannot be used as the SSH user name:
-    >
-    > root, hdiuser, storm, hbase, ubuntu, zookeeper, hdfs, yarn, mapred, hbase, hive, oozie, falcon, sqoop, admin, tez, hcat, hdinsight-zookeeper.
-
-	> For more information on using SSH with HDInsight, see one of the following articles:
-
-	> * [Use SSH with Linux-based Hadoop on HDInsight from Linux, Unix, or OS X](hdinsight-hadoop-linux-use-ssh-unix.md)
-	> * [Use SSH with Linux-based Hadoop on HDInsight from Windows](hdinsight-hadoop-linux-use-ssh-windows.md)
-
-    
-3.Click **OK** to save the parameters.
-
-4.From the **Custom deployment** blade, click **Resource group** dropdown box, and then click **New** to create a new resource group. The resource group is a container that groups the cluster, the dependent storage account and other linked resource.
-
-5.Click **Legal terms**, and then click **Create**.
-
-6.Click **Create**. You will see a new tile titled Submitting deployment for Template deployment. It takes about around 20 minutes to create the cluster and SQL database.
 
 ## Run Spark SQL queries using a Jupyter notebook
 
 
-![HDI architecture](https://github.com/pablomarin/SparklingWater-azure-template-work-in-progress-/blob/master/images/hdi-arch.png?raw=true)
+
 
 In this section, you use Jupyter notebook to run Spark SQL queries against the Spark cluster. HDInsight Spark clusters provide two kernels that you can use with the Jupyter notebook. These are:
 
