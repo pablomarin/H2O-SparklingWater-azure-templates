@@ -177,8 +177,7 @@
     "flowIpType": "Dynamic",
     "flowIpDomainNameLabel": "[concat(toLower(parameters('clusterName')), 'flow-ip', substring(uniqueString(resourceGroup().id), 0, 10))]",
 
-    "dbServerHost": "[concat(parameters('databaseServerName'), '.database.windows.net')]",
-    "dbConnectionUrl": "[concat(variables('dbServerHost'), ';database=', parameters('databaseName'), ';encrypt=true;trustServerCertificate=true;create=false;loginTimeout=300')]"
+    "dbConnectionUrl": "[concat(parameters('databaseServerName'), ';database=', parameters('databaseName'), ';encrypt=true;trustServerCertificate=true;create=false;loginTimeout=300')]"
   },
   "resources": [
     {
@@ -262,8 +261,8 @@
               "hive_database_name": "[parameters('databaseName')]",
               "hive_database_type": "mssql",
               "hive_existing_mssql_server_database": "[parameters('databaseName')]",
-              "hive_existing_mssql_server_host": "[variables('dbServerHost')]",
-              "hive_hostname": "[variables('dbServerHost')]"
+              "hive_existing_mssql_server_host": "[parameters('databaseServerName')]",
+              "hive_hostname": "[parameters('databaseServerName')]"
             },
             "oozie-site": {
               "oozie.service.JPAService.jdbc.driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
