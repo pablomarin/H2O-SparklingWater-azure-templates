@@ -1,0 +1,285 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "clusterName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the HDInsight Spark cluster to create."
+      }
+    },
+    "clusterLoginUserName": {
+      "type": "string",
+      "defaultValue": "hdiadmin",
+      "metadata": {
+        "description": "These credentials can be used to submit jobs to the cluster and to log into cluster dashboards."
+      }
+    },
+    "clusterLoginPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The password must be at least 10 characters in length and must contain at least one digit, one non-alphanumeric character, and one upper or lower case letter."
+      }
+    },
+    "sshUserName": {
+      "type": "string",
+      "defaultValue": "sshuser",
+      "metadata": {
+        "description": "These credentials can be used to remotely access the cluster via ssh."
+      }
+    },
+    "sshPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The password must be at least 10 characters in length and must contain at least one digit, one non-alphanumeric character, and one upper or lower case letter."
+      }
+    },
+    "clusterType": {
+      "type": "string",
+      "defaultValue": "spark",
+      "allowedValues": [
+        "spark"
+      ],
+      "metadata": {
+        "description": "The type of the HDInsight cluster to create."
+      }
+    },
+    "sparkVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "The Spark version to be installed on the cluster."
+      },
+      "allowedValues": [
+        "1.6",
+        "2.0"
+      ],
+      "defaultValue": "2.0"
+    },
+    "clusterHeadNodeCount": {
+      "type": "int",
+      "defaultValue": 1,
+      "metadata": {
+        "description": "The number of head nodes in the HDInsight Spark cluster."
+      }
+    },
+    "clusterHeadNodeSize": {
+      "type": "string",
+      "defaultValue": "Standard_D3_v2",
+      "allowedValues": [
+        "Standard_D3_v2",
+        "Standard_D4_v2",
+        "Standard_D5_v2",
+        "Standard_D11_v2",
+        "Standard_D12_v2",
+        "Standard_D13_v2",
+        "Standard_D14_v2",
+        "Standard_D15_v2",
+        "Standard_D3",
+        "Standard_D4",
+        "Standard_D5"
+      ],
+      "metadata": {
+        "description": "The size of the head nodes in the HDInsight Spark cluster."
+      }
+    },
+    "clusterWorkerNodeCount": {
+      "type": "int",
+      "defaultValue": 3,
+      "metadata": {
+        "description": "The number of worker nodes in the HDInsight Spark cluster."
+      }
+    },
+    "clusterWorkerNodeSize": {
+      "type": "string",
+      "defaultValue": "Standard_D3_v2",
+      "allowedValues": [
+        "Standard_D1_v2",
+        "Standard_D2_v2",
+        "Standard_D3_v2",
+        "Standard_D4_v2",
+        "Standard_D5_v2",
+        "Standard_D12_v2",
+        "Standard_D13_v2",
+        "Standard_D14_v2",
+        "Standard_D15_v2",
+        "Standard_D1",
+        "Standard_D2",
+        "Standard_D3",
+        "Standard_D4",
+        "Standard_D5"
+      ],
+      "metadata": {
+        "description": "The size of the head nodes in the HDInsight Spark cluster."
+      }
+    }
+  },
+  "variables": {
+    "defaultApiVersion": "2015-05-01-preview",
+    "clusterApiVersion": "2015-03-01-preview",
+    "clusterVersion": "3.5",
+    "clusterOSType": "Linux",
+
+    "storageAccountName": "[uniqueString(concat(parameters('clusterName'), resourceGroup().id))]",
+    "containerName": "[toLower(parameters('clustername'))]",
+    "storageAccountType": "Standard_LRS",
+
+    "virtualNetworkName": "[concat(parameters('clusterName'), '-Vnet')]",
+    "headNodeSubnetName": "[concat(parameters('clusterName'), '-HeadNode-Subnet')]",
+    "workerNodeSubnetName": "[concat(parameters('clusterName'), '-WorkerNode-Subnet')]",
+
+    "virtualNetworkAddressSpace": "192.168.0.0/16",
+    "headNodeSubnetAddressRange": "192.168.0.0/24",
+    "workerNodeSubnetAddressRange": "192.168.1.0/24",
+    "virtualNetworkId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+  },
+  "resources": [
+    {
+      "name": "[variables('storageAccountName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "[variables('defaultApiVersion')]",
+      "dependsOn": [ ],
+      "tags": { },
+      "properties": {
+        "accountType": "[variables('storageAccountType')]"
+      }
+    },
+    {
+      "name": "[variables('virtualNetworkName')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "[variables('defaultApiVersion')]",
+      "dependsOn": [ ],
+      "tags": { },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('virtualNetworkAddressSpace')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('headNodeSubnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('headNodeSubnetAddressRange')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[parameters('clusterName')]",
+      "type": "Microsoft.HDInsight/clusters",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "[variables('clusterApiVersion')]",
+      "dependsOn": [
+        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+      ],
+      "tags": { },
+      "properties": {
+        "clusterVersion": "[variables('clusterVersion')]",
+        "osType": "[variables('clusterOSType')]",
+        "clusterDefinition": {
+          "kind": "[parameters('clusterType')]",
+          "componentVersion": {
+            "Spark": "[parameters('sparkVersion')]"
+          },
+          "configurations": {
+            "gateway": {
+              "restAuthCredential.isEnabled": true,
+              "restAuthCredential.username": "[parameters('clusterLoginUserName')]",
+              "restAuthCredential.password": "[parameters('clusterLoginPassword')]"
+            }
+          }
+        },
+        "storageProfile": {
+          "storageaccounts": [
+            {
+              "name": "[concat(variables('storageAccountName'),'.blob.core.windows.net')]",
+              "isDefault": true,
+              "container": "[variables('containerName')]",
+              "key": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), variables('defaultApiVersion')).key1]"
+            }
+          ]
+        },
+        "computeProfile": {
+          "roles": [
+            {
+              "name": "headnode",
+              "targetInstanceCount": "[parameters('clusterHeadNodeCount')]",
+              "hardwareProfile": {
+                "vmSize": "[parameters('clusterHeadNodeSize')]"
+              },
+              "osProfile": {
+                "linuxOperatingSystemProfile": {
+                  "username": "[parameters('sshUserName')]",
+                  "password": "[parameters('sshPassword')]"
+                }
+              },
+              "virtualNetworkProfile": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+                "subnet": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName')), '/subnets/', variables('headNodeSubnetName'))]"
+              },
+              "scriptActions": [
+                {
+                  "name": "installR",
+                  "uri": "https://hdiconfigactions.blob.core.windows.net/linuxrconfigactionv01/r-installer-v01.sh",
+                  "parameters": ""
+                },
+                {
+                  "name": "headnode_installs",
+                  "uri": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/master/headnode_installs.sh",
+                  "parameters": "[concat(parameters('clusterWorkerNodeCount'), ' ', parameters('sshUserName'))]"
+                }
+              ]
+            },
+            {
+              "name": "workernode",
+              "targetInstanceCount": "[parameters('clusterWorkerNodeCount')]",
+              "hardwareProfile": {
+                "vmSize": "[parameters('clusterWorkerNodeSize')]"
+              },
+              "osProfile": {
+                "linuxOperatingSystemProfile": {
+                  "username": "[parameters('sshUserName')]",
+                  "password": "[parameters('sshPassword')]"
+                }
+              },
+              "virtualNetworkProfile": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+                "subnet": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName')), '/subnets/', variables('headNodeSubnetName'))]"
+              },
+              "scriptActions": [
+                {
+                  "name": "installR",
+                  "uri": "https://hdiconfigactions.blob.core.windows.net/linuxrconfigactionv01/r-installer-v01.sh",
+                  "parameters": ""
+                },
+                {
+                  "name": "worker_installs",
+                  "uri": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/master/worker_installs.sh",
+                  "parameters": ""
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "vnet": {
+      "type": "object",
+      "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName')))]"
+    },
+    "cluster": {
+      "type": "object",
+      "value": "[reference(resourceId('Microsoft.HDInsight/clusters', parameters('clusterName')))]"
+    },
+    "clusterFQDN": {
+      "type": "string",
+      "value": "[concat('https://', parameters('clusterName'), '.azurehdinsight.net')]"
+    }
+  }
+}
