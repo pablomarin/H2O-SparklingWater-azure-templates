@@ -61,6 +61,19 @@ Both templates introduced in this repo install H2O on top of Spark on top of YAR
 
 Note that all spark applications deployed using a Jupyter Notebook will have "yarn-cluster" deploy-mode. This means that the sparkling water driver can be allocated on any node of the cluster, not necessarily on the head node.
 
+### How do I see the H2O Flow portal?
+
+Both Basic and Advanced templates have to be manually tweeked in the azure portal in order to web allow access to the VM where the spark driver falls.
+
+This is what you need to do:
+In the notebook, once you create the spark context, you will see an output like this:
+![h2o-context](./images/h2ocontext.png)
+
+1. Write down or memorize the Ip and port of the "H2O connection URL".
+2. Now open the azure portal -> open the resource group of the cluster you created -> click on the VNET and see what worker node has the IP you memorize before.
+3. Now go back to the resource group list of resources and select the NIC interface of the worker node(VM)
+4. Add the spark-ip-flow-XXX public IP listed to the NIC and click Save
+5. On your browser open: http://[publicIP]:port  and you will see the FLOW UI
 
 
 ## Create Jupyter notebook with PySpark kernel 
@@ -116,9 +129,6 @@ During configuration, you must specify an Azure storage account and an Azure Blo
 It is not recommended using the default Blob storage container for storing business data. Deleting the default Blob storage container after each use to reduce storage cost is a good practice. Note that the default container contains application and system logs. Make sure to retrieve the logs before deleting the container.
 
 
-## Use additional storage - Advanced Template
-
-In some cases, you may wish to add additional storage to the cluster. For example, you might have multiple Azure storage accounts for different geographical regions or different services, but you want to analyze them all with HDInsight.
 
 
 ##<a name="next-steps"></a>What components are included as part of a Spark cluster?
