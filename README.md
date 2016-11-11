@@ -36,7 +36,7 @@ For the files on the default file system, you can use a relative path or an abso
 	wasbs:///example/jars/hadoop-mapreduce-examples.jar
 	/example/jars/hadoop-mapreduce-examples.jar
 
-In addition to this storage account, you can add additional storage accounts from the same Azure subscription or different Azure subscriptions during the creation process or after a cluster has been created. For instructions about adding additional storage accounts. Normally this is where your big data resides. The syntax is:
+In addition to this storage account, you can add additional storage accounts (<b>Advanced Template)</b> from the same Azure subscription or different Azure subscriptions during the creation process or after a cluster has been created. For instructions about adding additional storage accounts. <b>Normally this is where your big data resides</b>. The syntax is:
 
 	wasb[s]://<containername>@<accountname>.blob.core.windows.net/<path>
 	
@@ -54,17 +54,17 @@ Only the data on the linked storage account and the external hive meta-store wil
 ![Sparkling architecture](http://www.ibmbigdatahub.com/sites/default/files/quality_of_life_fig_1.jpg)
 
 Both templates will automatically download the latest version of Sparkling Water compatible with Spark 1.6.2.
-It will also copy the sparkling water folder on the default Storage Account.
+It will also copy the sparkling water folder on the default storage under /HDINotebooks/Sparkling/.
 
 
 ## Create Jupyter notebook with PySpark kernel 
 
-In this section, you use Jupyter notebook to run Spark SQL queries against the Spark cluster. HDInsight Spark clusters provide two kernels that you can use with the Jupyter notebook. These are:
+HDInsight Spark clusters provide two kernels that you can use with the Jupyter notebook. These are:
 
 * **PySpark** (for applications written in Python)
 * **Spark** (for applications written in Scala)
 
-In this article, you will use the PySpark kernel. Couple of key benefits of using the PySpark kernel are:
+Couple of key benefits of using the PySpark kernel are:
 
 * You do not need to set the contexts for Spark and Hive. These are automatically set for you.
 * You can use cell magics, such as `%%sql`, to directly run your SQL or Hive queries, without any preceding code snippets.
