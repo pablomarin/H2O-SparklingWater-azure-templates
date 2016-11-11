@@ -69,11 +69,11 @@ This is what you need to do:
 In the notebook, once you create the spark context, you will see an output like this:
 ![h2o-context](./images/h2ocontext.png)
 
-1) Write down or memorize the Ip and port of the "H2O connection URL".
-2) Now open the azure portal -> open the resource group of the cluster you created -> click on the VNET and see what worker node has the IP you memorize before.
-3) Now go back to the resource group list of resources and select the NIC interface of the worker node(VM)
-4) Add the spark-ip-flow-XXX public IP listed to the NIC and click Save
-5) On your browser open: http://[publicIP]:port  and you will see the FLOW UI
+1. Write down or memorize the Ip and port of the "H2O connection URL".
+2. Now open the azure portal -> open the resource group of the cluster you created -> click on the VNET and see what worker node has the IP you memorize before.
+3. Now go back to the resource group list of resources and select the NIC interface of the worker node(VM)
+4. Add the spark-ip-flow-XXX public IP listed to the NIC and click Save
+5. On your browser open: http://[publicIP]:port  and you will see the FLOW UI
 
 
 ## Create Jupyter notebook with PySpark kernel 
