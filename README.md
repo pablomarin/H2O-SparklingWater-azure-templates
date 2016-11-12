@@ -9,17 +9,16 @@ There are two kind of templates offered on this repo.
 </a>
 	- HDInsight 3.5
 	- Spark 1.6.2
-	- Latest version of H2O Sparkling water 
-	- VNet with NSG (Network Security Group)
+	- Latest version of H2O Sparkling water (for spark 1.6)
+	- VNet containing all resources
+	- Required python packages in each node
+	- R open in each node
 2. Advanced: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2Fmaster%2Fazuredeploy-advanced.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
-	- HDInsight 3.5
-	- Spark 1.6.2
-	- Latest version of H2O Sparkling water 
-	- VNet with NSG (Network Security Group)
-	- Additional data source (Linked Storage Account)
-	- External Hive/Oozie Metastore (SQL Database)
+	- Everything in Basic template plus:
+	- Additional data source (Linked Storage Account) - pre-requiste
+	- External Hive/Oozie Metastore (SQL Database) - pre-requiste
 	
 It takes about 20 minutes to create the cluster.
 
@@ -53,7 +52,7 @@ Only the data on the linked storage account and the external hive meta-store wil
 
 ![Sparkling architecture](http://www.ibmbigdatahub.com/sites/default/files/quality_of_life_fig_1.jpg)
 
-Both templates will automatically download the latest version of Sparkling Water compatible with Spark 1.6.2.
+Both templates will automatically download the latest version of Sparkling Water compatible with Spark 1.6.
 It will also copy the sparkling water folder on the default storage under /HDINotebooks/Sparkling/.
 
 H2O can be installed as a standalone cluster, on top of YARN, and on top of spark on top of YARN.
