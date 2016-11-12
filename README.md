@@ -61,19 +61,26 @@ Both templates introduced in this repo install H2O on top of Spark on top of YAR
 
 Note that all spark applications deployed using a Jupyter Notebook will have "yarn-cluster" deploy-mode. This means that the sparkling water driver can be allocated on any node of the cluster, not necessarily on the head node.
 
-### How do I see the H2O Flow portal?
+### How do I see the H2O Flow UI?
 
-Both Basic and Advanced templates have to be manually tweeked in the azure portal in order to web allow access to the VM where the spark driver falls.
+Both Basic and Advanced templates have to be manually tweeked in the azure portal in order to allow http access to the VM where the spark driver falls, the only VM that provides the FLOW portal.
 
 This is what you need to do:
-In the notebook, once you create the spark context, you will see an output like this:
+In the notebook, once you create the h2o context, you will see an output like this:
 ![h2o-context](./images/h2ocontext.png)
 
 1. Write down or memorize the Ip and port of the "H2O connection URL".
-2. Now open the azure portal -> open the resource group of the cluster you created -> click on the VNET and see what worker node has the IP you memorize before.
-3. Now go back to the resource group list of resources and select the NIC interface of the worker node(VM)
-4. Add the spark-ip-flow-XXX public IP listed to the NIC and click Save
-5. On your browser open: http://[publicIP]:port  and you will see the FLOW UI
+2. Now open the azure portal -> open the resource group of the cluster you created -> click on the VNET and memorize what worker node has the IP on step 1.
+3. Now go back to the resource group list of resources and select the "ClusterFlowIP" resource -> Click on "Associate".
+![FlowIp-a](.images/flowipA.png)
+
+4. On the "Associate" blade select Resource type: Network Interface -> then select from the list the NIC of the worker node on step 2 -> click OK.
+![FlowIp-b](.images/flowipB.png)
+
+5. Refresh the "ClusterFlowIP" resource blade and copy the IP address under "Essentials"
+![FlowIp-c](.images/flowipC.png)
+
+6. On your browser open: http://[publicIP]:port  and you will see the FLOW UI
 
 
 ## Create Jupyter notebook with PySpark kernel 
