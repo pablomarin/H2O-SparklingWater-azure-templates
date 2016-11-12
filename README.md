@@ -70,15 +70,17 @@ In the notebook, once you create the h2o context, you will see an output like th
 ![h2o-context](./images/h2ocontext.png)
 
 1. Write down or memorize the Ip and port of the "H2O connection URL".
+
 2. Now open the azure portal -> open the resource group of the cluster you created -> click on the VNET and memorize what worker node has the IP on step 1.
+
 3. Now go back to the resource group list of resources and select the "ClusterFlowIP" resource -> Click on "Associate".
-![FlowIp-a](.images/flowipA.png)
+!(./images/flowipA.png)
 
 4. On the "Associate" blade select Resource type: Network Interface -> then select from the list the NIC of the worker node on step 2 -> click OK.
-![FlowIp-b](.images/flowipB.png)
+!(./images/flowipB.png)
 
-5. Refresh the "ClusterFlowIP" resource blade and copy the IP address under "Essentials"
-![FlowIp-c](.images/flowipC.png)
+5. Refresh the "ClusterFlowIP" resource blade and copy the IP address under "Essentials".
+!(./images/flowipC.png)
 
 6. On your browser open: http://[publicIP]:port  and you will see the FLOW UI
 
