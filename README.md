@@ -63,7 +63,7 @@ Note that all spark applications deployed using a Jupyter Notebook will have "ya
 
 ### How do I see the H2O Flow UI?
 
-Both Basic and Advanced templates have to be manually tweeked in the azure portal in order to allow http access to the VM where the spark driver falls, the only VM that provides the FLOW portal.
+Both Basic and Advanced templates have to be manually tweeked in the azure portal in order to allow http access to the VM where the spark driver falls, the only VM that provides the FLOW portal. <b>Note: the spark driver can change worker nodes every time you open/run a notebook (submit application).</b>
 
 This is what you need to do:
 In the notebook, once you create the h2o context, you will see an output like this:
