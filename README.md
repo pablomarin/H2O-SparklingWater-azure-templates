@@ -59,7 +59,7 @@ It will also copy the sparkling water folder on the default storage under /HDINo
 H2O can be installed as a standalone cluster, on top of YARN, and on top of spark on top of YARN.
 Both templates introduced in this repo install H2O on top of Spark on top of YARN => Sparkling Water on YARN.
 
-Note that all spark applications deployed using a Jupyter Notebook will have "yarn-cluster" deploy-mode. This means that the sparkling water driver can be allocated on any node of the cluster, not necessarily on the head node.
+Note that all spark applications deployed using a Jupyter Notebook will have "yarn-cluster" deploy-mode. This means that the sparkling water driver can be allocated on any worker node of the cluster, not on the head nodes.
 
 ### How do I see the H2O Flow UI?
 
