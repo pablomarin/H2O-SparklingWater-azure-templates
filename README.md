@@ -39,7 +39,14 @@ In Jupyter home, you will see a folder called "H2O-PySparkling-Examples" with a 
 ![HDI arch](https://acom.azurecomcdn.net/80C57D/cdn/mediahandler/docarticles/dpsmedia-prod/azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-use-blob-storage/20160913101040/hdi.wasb.arch.png)
 
 Azure HDInsight Spark Clusters (Spark on YARN) come with:<br>
-Head node (2), Worker node (1+), Zookeeper node (3) (Free for A1 Zookeepers VM size)
+Head node (2), Worker node (1+), Zookeeper node (3) (Free for A1 Zookeepers VM size)<br>
+Defaults:<br>
+
+> Number of Worker nodes: 3 <br>
+> Size of Head Nodes: D12 (28G RAM, 4 cores)<br>
+> Size of Worker Nodes: D13 (56G RAM, 8 cores)<br>
+
+For a complete list of VM sizes go [here](https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-windows-sizes/#dv2-series)
 
 Hadoop supports a notion of the default file system. The default file system implies a default scheme and authority. It can also be used to resolve relative paths. During the HDInsight creation process, an Azure Storage account and a specific Azure Blob storage container from that account is designated as the default file system.
 
