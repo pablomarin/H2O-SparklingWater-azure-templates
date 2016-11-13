@@ -22,6 +22,15 @@ There are two kind of templates offered on this repo.
 	
 It takes about 20 minutes to create the cluster.
 
+## Next Step: Run pySparkling Notebook Examples:
+
+Open your browser and go to:
+> `https://CLUSTERNAME.azurehdinsight.net/jupyter`
+
+Insert the username (<b>hdiadmin</b> by default) and password to your cluster. 
+
+You will see in Jupyter a new folder "H2O-PySparkling-Examples" with a couple of notebooks you can run. Make sure that you set the right configuration on the first cell of the notebooks based on the sizes of your cluster nodes.
+
 
 ## Azure HDInsight Architecture
 
