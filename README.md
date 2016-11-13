@@ -47,7 +47,7 @@ Most HDFS commands (for example, <b>ls</b>, <b>copyFromLocal</b> and <b>mkdir</b
 
 The cluster can also access any Blob storage containers that are configured with full public read access or public read access for blobs only.
 
-Only the data on the linked storage account and the external hive meta-store will persist after the cluster is deleted. <br><b>MAKE SURE YOU DO NOT STORE YOUR IMPORTANT DATA ON THE DEFAULT STORAGE ACCOUNT CREATED BY THE CLUSTER</b>.
+Only the data on the linked storage account and the external hive meta-store will persist after the cluster is deleted. 
 
 #### Hive Metastore
 
