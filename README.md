@@ -27,7 +27,7 @@ It takes about 20 minutes to create the cluster.
 
 ![HDI arch](https://acom.azurecomcdn.net/80C57D/cdn/mediahandler/docarticles/dpsmedia-prod/azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-use-blob-storage/20160913101040/hdi.wasb.arch.png)
 
-Spark Clusters come with:<br>
+Azure HDInsight Spark Clusters (Spark on YARN) come with:<br>
 Head node (2), Worker node (1+), Zookeeper node (3) (Free for A1 Zookeepers VM size)
 
 Hadoop supports a notion of the default file system. The default file system implies a default scheme and authority. It can also be used to resolve relative paths. During the HDInsight creation process, an Azure Storage account and a specific Azure Blob storage container from that account is designated as the default file system.
