@@ -17,8 +17,8 @@ There are two kind of templates offered on this repo.
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 	- Everything in Basic template plus:
-	- Additional data source (Linked Storage Account) - pre-requisite
-	- External Hive/Oozie Metastore (SQL Database) - pre-requisite
+	- Connection to additional data source (Linked Storage Account) - pre-requisite
+	- Connection to external Hive/Oozie Metastore (SQL Database) - pre-requisite
 	
 It takes about 20 minutes to create the cluster.
 
