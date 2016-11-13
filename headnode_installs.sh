@@ -38,7 +38,7 @@ export MASTER="yarn-client"
 wait
 
 echo "Copying Sparkling folder to default storage account ... "
-hdfs dfs -copyFromLocal -f "/home/$2/sparkling-water-${version}.${h2oBuild}/" "/HdiNotebooks/H2O-Sparkling-Water"
+hdfs dfs -copyFromLocal -f "/home/$2/sparkling-water-${version}.${h2oBuild}/" "/H2O-Sparkling-Water"
 wait
 
 echo "Copying Notebook Examples to default Storage account Jupyter home folder ... "
