@@ -49,7 +49,7 @@ The cluster can also access any Blob storage containers that are configured with
 
 Only the data on the linked storage account and the external hive meta-store will persist after the cluster is deleted. 
 
-#### Hive Metastore
+### Hive Metastore
 
 The metastore contains Hive metadata, such as Hive tables, partitions, schemas, and columns. The metastore helps you to retain your Hive and Oozie metadata. If you are familiar with Databricks and their concept of Tables, then a custom Hive Metastore is the same thing: a persistent database to store Hive tables.
 
