@@ -26,7 +26,8 @@ It takes about 20 minutes to create the cluster.
 ## Next Step: Run pySparkling Notebook Examples:
 
 Once your cluster is created, Open your browser and go to:
-> `https://CLUSTERNAME.azurehdinsight.net/jupyter`
+
+	https://CLUSTERNAME.azurehdinsight.net/jupyter
 
 Insert the username (<b>hdiadmin</b> by default) and password you set during cluster creation. 
 
