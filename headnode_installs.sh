@@ -44,7 +44,9 @@ wait
 echo "Copying Notebook Examples to default Storage account Jupyter home folder ... "
 curl --silent -o 4_sentiment_sparkling.ipynb  "https://raw.githubusercontent.com/pablomarin/H2O-SparklingWater-azure-templates/master/Notebooks/4_sentiment_sparkling.ipynb"
 curl --silent -o ChicagoCrimeDemo.ipynb  "https://raw.githubusercontent.com/pablomarin/H2O-SparklingWater-azure-templates/master/Notebooks/ChicagoCrimeDemo.ipynb"
-hfds dfs -copyFromLocal -f "./*ipynb" "/HdiNotebooks/H2O-PySparkling/"
+mkdir "H2O-PySparkling-Examples"
+mv "./*.ipynb" "./H2O-PySparkling-Examples/"
+hdfs dfs -copyFromLocal -f "./H2O-PySparkling-Examples/" "/HdiNotebooks/H2O-PySparkling-Examples"
 wait
 
 
