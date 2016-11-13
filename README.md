@@ -22,6 +22,7 @@ There are two kind of templates offered on this repo.
 	
 It takes about 20 minutes to create the cluster.
 
+
 ## Next Step: Run pySparkling Notebook Examples:
 
 Once your cluster is created, Open your browser and go to:
@@ -72,6 +73,7 @@ By default, Hive uses an embedded Azure SQL database to store this information. 
 An external Azure SQL DB is linked to store the Hive metastore so that it persists even when the cluster is blown away.  For example, if you create Hive tables in a cluster created with an external Hive metastore, you can see those tables if you delete and re-create the cluster with the same Hive metastore.
 
 > When you're creating a custom metastore, do not use a database name that contains dashes or hyphens because this can cause the cluster creation process to fail.
+
 
 ## H2O Sparkling Water Architecture
 
@@ -153,7 +155,7 @@ To delete the Sparkling Water Cluster, go to the Azure portal and delete the Res
 
 
 
-##<a name="next-steps"></a>What components are included as part of a Spark cluster?
+## What components are included as part of a Spark cluster?
 
 ![hdi-arch](https://github.com/pablomarin/SparklingWater-azure-template-work-in-progress-/blob/master/images/hdi-arch.png?raw=true)
 
