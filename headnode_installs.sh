@@ -36,13 +36,13 @@ export SPARKLING_HOME="/home/$2/sparkling-water-${version}.${h2oBuild}"
 export MASTER="yarn-client"
 
 echo "Copying Sparkling folder to default storage account ... "
-hdfs dfs -mkdir "/H2O-Sparkling-Water"
+hdfs dfs -mkdir -p "/H2O-Sparkling-Water"
 hdfs dfs -put -f /home/$2/sparkling-water-${version}.${h2oBuild}/* /H2O-Sparkling-Water/
 
 echo "Copying Notebook Examples to default Storage account Jupyter home folder ... "
 curl --silent -o 4_sentiment_sparkling.ipynb  "https://raw.githubusercontent.com/pablomarin/H2O-SparklingWater-azure-templates/master/Notebooks/4_sentiment_sparkling.ipynb"
 curl --silent -o ChicagoCrimeDemo.ipynb  "https://raw.githubusercontent.com/pablomarin/H2O-SparklingWater-azure-templates/master/Notebooks/ChicagoCrimeDemo.ipynb"
-hdfs dfs -mkdir "/HdiNotebooks/H2O-PySparkling-Examples"
+hdfs dfs -mkdir -p "/HdiNotebooks/H2O-PySparkling-Examples"
 hdfs dfs -put -f *.ipynb /HdiNotebooks/H2O-PySparkling-Examples/
 
 echo "Success"
