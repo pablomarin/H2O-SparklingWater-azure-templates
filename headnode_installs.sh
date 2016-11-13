@@ -47,6 +47,5 @@ curl --silent -o 4_sentiment_sparkling.ipynb  "https://raw.githubusercontent.com
 curl --silent -o ChicagoCrimeDemo.ipynb  "https://raw.githubusercontent.com/pablomarin/H2O-SparklingWater-azure-templates/master/Notebooks/ChicagoCrimeDemo.ipynb"
 hdfs dfs -mkdir "/HdiNotebooks/H2O-PySparkling-Examples"
 hdfs dfs -put -f *.ipynb /HdiNotebooks/H2O-PySparkling-Examples/
-wait
 
-echo Success.
+echo "Success"
