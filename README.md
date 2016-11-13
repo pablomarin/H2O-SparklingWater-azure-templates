@@ -30,7 +30,7 @@ Once your cluster is created, Open your browser and go to:
 
 Insert the username (<b>hdiadmin</b> by default) and password you set during cluster creation. 
 
-You will see in Jupyter a new folder "H2O-PySparkling-Examples" with a couple of notebooks you can run. Make sure that you set the right configuration on the first cell of the notebooks based on the sizes of your cluster nodes.
+In Jupyter home, you will see a folder called "H2O-PySparkling-Examples" with a couple of notebooks you can run. Make sure that you set the right configuration on the first cell of the notebooks based on the VM sizes of your cluster nodes.
 
 
 ## Azure HDInsight Architecture
