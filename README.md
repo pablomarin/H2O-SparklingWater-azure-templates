@@ -1,4 +1,4 @@
-# SparklingWater-azure-template
+# H2O-SparklingWater-azure-templates
 
 The goal of this repo is to provide an easy (click-and-go) way to deploy H2O Sparkling Water clusters on Microsoft Azure.
 
@@ -17,8 +17,8 @@ There are two kind of templates offered on this repo.
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 	- Everything in Basic template plus:
-	- Additional data source (Linked Storage Account) - pre-requiste
-	- External Hive/Oozie Metastore (SQL Database) - pre-requiste
+	- Additional data source (Linked Storage Account) - pre-requisite
+	- External Hive/Oozie Metastore (SQL Database) - pre-requisite
 	
 It takes about 20 minutes to create the cluster.
 
@@ -45,8 +45,21 @@ HDInsight provides  also access to the distributed file system that is locally a
 	
 Most HDFS commands (for example, <b>ls</b>, <b>copyFromLocal</b> and <b>mkdir</b>) still work as expected. Only the commands that are specific to the native HDFS implementation (which is referred to as DFS), such as <b>fschk</b> and <b>dfsadmin</b>, will show different behavior in Azure Blob storage.
 
-Only the data on the linked storage account and the external hive meta-store will persist after the cluster is deleted. <b>MAKE SURE YOU DO NOT STORE YOUR IMPORTANT DATA ON THE DEFAULT STORAGE ACCOUNT CREATED BY THE CLUSTER</b>.
+The cluster can also access any Blob storage containers that are configured with full public read access or public read access for blobs only.
 
+Only the data on the linked storage account and the external hive meta-store will persist after the cluster is deleted. <br><b>MAKE SURE YOU DO NOT STORE YOUR IMPORTANT DATA ON THE DEFAULT STORAGE ACCOUNT CREATED BY THE CLUSTER</b>.
+
+#### Hive Metastore
+
+The metastore contains Hive metadata, such as Hive tables, partitions, schemas, and columns. The metastore helps you to retain your Hive and Oozie metadata. If you are familiar with Databricks and their concept of Tables, then a custom Hive Metastore is the same thing: a persistent database to store Hive tables.
+
+<b>On the Basic Tamplate: </b> <br>
+By default, Hive uses an embedded Azure SQL database to store this information. The embedded database can't preserve the metadata when the cluster is deleted. The Hive metastore that comes by default when HDInsight is deployed is transient. When the cluster is deleted, Hive metastore gets deleted as well. 
+
+<b>On the Advanced Template: </b> <br>
+An external Azure SQL DB is linked to store the Hive metastore so that it persists even when the cluster is blown away.  For example, if you create Hive tables in a cluster created with an external Hive metastore, you can see those tables if you delete and re-create the cluster with the same Hive metastore.
+
+> When you're creating a custom metastore, do not use a database name that contains dashes or hyphens because this can cause the cluster creation process to fail.
 
 ## H2O Sparkling Water Architecture
 
@@ -58,17 +71,17 @@ It will also copy the sparkling water folder on the default storage under /HdiNo
 H2O can be installed as a standalone cluster, on top of YARN, and on top of spark on top of YARN.
 Both templates introduced in this repo install H2O on top of Spark on top of YARN => Sparkling Water on YARN.
 
-Note that all spark applications deployed using a Jupyter Notebook will have "yarn-cluster" deploy-mode. This means that the sparkling water driver can be allocated on any worker node of the cluster, not on the head nodes.
+Note that all spark applications deployed using a Jupyter Notebook will have "yarn-cluster" deploy-mode. This means that the spark driver node can be allocated on any worker node of the cluster, not on the head nodes.
 
 ### How do I see the H2O Flow UI?
 
-Both Basic and Advanced templates have to be manually tweeked in the azure portal in order to allow http access to the VM where the spark driver falls, the only VM that provides the FLOW portal. <b>Note: the spark driver can change worker nodes every time you open/run a notebook (submit application).</b>
+Both Basic and Advanced templates have to be manually tweeked in the azure portal in order to allow http access to the VM where the spark driver falls (the only VM that provides the FLOW portal). <b>Note: the spark driver can change to any worker node each time you open/run a notebook (submit application).</b>
 
-This is what you need to do:
+This is what you need to do:<br>
 In the notebook, once you create the h2o context, you will see an output like this:
 ![h2o-context](./images/h2ocontext.png)
 
-1. Write down or memorize the Ip and port of the "H2O connection URL".
+1. Write down or memorize the IP address and port of the "H2O connection URL".
 
 2. Now open the azure portal -> open the resource group of the cluster you created -> click on the VNET and memorize what worker node has the IP on step 1.
 
@@ -124,18 +137,7 @@ In case there are issues accessing the storage account for the cluster, the note
 
 ## Delete the cluster
 
-To delete the Sparkling Water Cluster, go to the portal and delete the Resource Group.
-
-
-
-## Data source
-
-The original Hadoop distributed file system (HDFS) uses many local disks on the cluster. HDInsight uses Azure Blob storage for data storage. Azure Blob storage is a robust, general-purpose storage solution that integrates seamlessly with HDInsight. Through an HDFS interface, the full set of components in HDInsight can operate directly on structured or unstructured data in Blob storage. Storing data in Blob storage helps you safely delete the HDInsight clusters that are used for computation without losing user data.
-
-During configuration, you must specify an Azure storage account and an Azure Blob storage container on the Azure storage account. The Blob storage container is used as the default storage location by the cluster. Optionally, you can specify additional Azure Storage accounts (linked storage) that will be accessible by the cluster. The cluster can also access any Blob storage containers that are configured with full public read access or public read access for blobs only. 
-
-It is not recommended using the default Blob storage container for storing business data. Deleting the default Blob storage container after each use to reduce storage cost is a good practice. Note that the default container contains application and system logs. Make sure to retrieve the logs before deleting the container.
-
+To delete the Sparkling Water Cluster, go to the Azure portal and delete the Resource Group.
 
 
 
@@ -152,11 +154,3 @@ Spark in HDInsight includes the following components that are available on the c
 
 Spark in HDInsight also provides an [ODBC driver](http://go.microsoft.com/fwlink/?LinkId=616229) for connectivity to Spark clusters in HDInsight from BI tools such as Microsoft Power BI and Tableau.
 
-
-## Use Hive/Oozie metastore - Advanced Template
-
-We strongly recommend that you use a custom metastore if you want to retain your Hive tables after you delete your HDInsight cluster. You will be able to attach that metastore to another HDInsight cluster.
-
-The metastore contains Hive and Oozie metadata, such as Hive tables, partitions, schemas, and columns. The metastore helps you to retain your Hive and Oozie metadata, so you don't need to re-create Hive tables or Oozie jobs when you create a new cluster. By default, Hive uses an embedded Azure SQL database to store this information. The embedded database can't preserve the metadata when the cluster is deleted. When you create Hive table in an HDInsight cluster with an Hive metastore configured, those tables will be retained when you recreate the cluster using the same Hive metastore.
-
-> When creating a custom metastore, do not use a database name that contains dashes or hyphens. This can cause the cluster creation process to fail.
