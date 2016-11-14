@@ -88,9 +88,9 @@ An external Azure SQL DB is linked to store the Hive metastore so that it persis
 ![Sparkling architecture](http://www.ibmbigdatahub.com/sites/default/files/quality_of_life_fig_1.jpg)
 
 Both templates will automatically download the latest version of Sparkling Water compatible with Spark 1.6.
-It will also copy the sparkling water folder on the default storage under /HdiNotebooks/H2O-Sparkling-Water/.
+It will also copy the sparkling water folder on the default storage under /H2O-Sparkling-Water/ folder.
 
-H2O can be installed as a standalone cluster, on top of YARN, and on top of spark on top of YARN.
+H2O can be installed as a standalone cluster, on top of YARN, and on top of Spark on top of YARN.
 Both templates introduced in this repo install H2O on top of Spark on top of YARN => Sparkling Water on YARN.
 
 Note that all spark applications deployed using a Jupyter Notebook will have "yarn-cluster" deploy-mode. This means that the spark driver node can be allocated on any worker node of the cluster, not on the head nodes.
