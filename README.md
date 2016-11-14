@@ -93,7 +93,19 @@ It will also copy the sparkling water folder on the default storage under /H2O-S
 H2O can be installed as a standalone cluster, on top of YARN, and on top of Spark on top of YARN.
 Both templates introduced in this repo install H2O on top of Spark on top of YARN => Sparkling Water on YARN.
 
-Note that all spark applications deployed using a Jupyter Notebook will have "yarn-cluster" deploy-mode. This means that the spark driver node can be allocated on any worker node of the cluster, not on the head nodes.
+Note that all spark applications deployed using a Jupyter Notebook will have "yarn-cluster" deploy-mode. This means that the spark driver node will be allocated on any worker node of the cluster, NOT on the head nodes.
+
+<b>Another very important thing: Memory and Cores allocation in YARN.<br></b>
+
+The process of smart RAM and CPU allocation in Spark over YARN is truly an art. By default, the notebook examples in this repo allocate 70%-80% of the workers node RAM and 1 executor per worker node, every time you run the notebook. <br>
+This means:
+* You cannot run more than one application (notebook) in the cluster at a time. Why? the notebook is fixing all cluster resources to that application.
+* If you want to run multiple notebooks/applications in the cluster at the same time, it is highly recommended to turn on dynamic allocation (<b>spark.dynamicAllocation.enabled</b>), and remove the fixed parameters at the spark conf cell.
+* Wrong memory/executor/cores configuration will cause YARN to: kill the application or allocate less executors to Sparkling Water (Spark application)
+
+For a good read about spark parameter tuning, please check this link:
+http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-2/
+
 
 ### How do I see the H2O Flow UI?
 
