@@ -323,7 +323,7 @@
                 },
                 {
                   "name": "headnode_installs",
-                  "uri": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/master/headnode_installs.sh",
+                  "uri": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/Spark2.0/headnode_installs.sh",
                   "parameters": "[concat(parameters('clusterWorkerNodeCount'), ' ', parameters('sshUserName'))]"
                 }
               ]
@@ -352,7 +352,7 @@
                 },
                 {
                   "name": "worker_installs",
-                  "uri": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/master/worker_installs.sh",
+                  "uri": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/Spark2.0/worker_installs.sh",
                   "parameters": ""
                 }
               ]
