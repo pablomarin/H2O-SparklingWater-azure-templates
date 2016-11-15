@@ -56,7 +56,7 @@ For the files on the default file system, you can use a relative path or an abso
 	wasbs:///example/jars/hadoop-mapreduce-examples.jar
 	/example/jars/hadoop-mapreduce-examples.jar
 
-In addition to this storage account, you can add additional storage accounts (<b>Advanced Template)</b> from the same Azure subscription or different Azure subscriptions during the creation process or after a cluster has been created. Note that the additional storage account must be in the same region thatn the HDI cluster. <b>Normally this is where your big data resides</b>. The syntax is:
+In addition to this storage account, you can add additional storage accounts (<b>Advanced Template)</b> from the same Azure subscription or different Azure subscriptions during the creation process or after a cluster has been created. Note that the additional storage account must be in the same region than the HDI cluster. <b>Normally this is where your big data resides</b>. The syntax is:
 
 	wasb[s]://<containername>@<accountname>.blob.core.windows.net/<path>
 	
@@ -72,13 +72,22 @@ Only the data on the linked storage account and the external hive meta-store wil
 
 ### Hive Metastore
 
-The metastore contains Hive metadata, such as Hive tables, partitions, schemas, and columns. The metastore helps you to retain your Hive and Oozie metadata. If you are familiar with Databricks and their concept of Tables, then a custom Hive Metastore is the same thing: a persistent database to store Hive tables.
+The metastore contains Hive metadata, such as Hive table definitions, partitions, schemas, and columns. The metastore helps you to retain your Hive and Oozie metadata. If you are familiar with Databricks and their concept of Tables, then a custom Hive Metastore is the same thing: a persistent database to store Hive tables metadata. It is important to understand that the actual tables data is NOT in the SQL DB, but instead on the path defined in the variable <b>hive.metastore.warehouse.dir</b> which by default points to the default storage account/container under the path /hive/warehouse.
+
 
 <b>On the Basic Tamplate: </b> <br>
 By default, Hive uses an embedded Azure SQL database to store this information. The embedded database can't preserve the metadata when the cluster is deleted. The Hive metastore that comes by default when HDInsight is deployed is transient. When the cluster is deleted, Hive metastore gets deleted as well. 
 
 <b>On the Advanced Template: </b> <br>
-An external Azure SQL DB is linked to store the Hive metastore so that it persists even when the cluster is blown away.  For example, if you create Hive tables in a cluster created with an external Hive metastore, you can see those tables if you delete and re-create the cluster with the same Hive metastore.
+An external Azure SQL DB is linked to store the Hive metastore so that it persists even when the cluster is blown away.  For example, if you create Hive tables in a cluster created with an external Hive metastore, you can see those tables if you delete and re-create the cluster with the same Hive metastore. IMPORTANT: make sure that you set the location of those tables on your external/linked storage account, you can do this by calling the EXTERNAL clause on your SQL CREATE statement, for example:
+
+	CREATE EXTERNAL TABLE page_view(viewTime INT, userid BIGINT,
+    		page_url STRING, referrer_url STRING,
+     		ip STRING COMMENT 'IP Address of the User',
+     		country STRING COMMENT 'country of origination')
+ 	COMMENT 'This is the staging page view table'
+ 	STORED AS PARQUET
+ 	LOCATION 'wasb[s]://<containername>@<accountname>.blob.core.windows.net/<path>';
 
 > When you're creating a custom metastore, do not use a database name that contains dashes or hyphens because this can cause the cluster creation process to fail.
 
