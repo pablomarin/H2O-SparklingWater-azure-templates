@@ -4,7 +4,7 @@ The goal of this repo is to provide an easy (click-and-go) way to deploy H2O Spa
 
 There are two kind of templates offered on this repo.
 
-1. Basic: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2Fmaster%2Fazuredeploy-basic.json" target="_blank">
+1. Basic: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2FSpark2.0%2Fazuredeploy-basic.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 	- HDInsight 3.5
@@ -13,7 +13,7 @@ There are two kind of templates offered on this repo.
 	- VNet containing all resources
 	- Required python packages in each node
 	- R open in each node
-2. Advanced: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2Fmaster%2Fazuredeploy-advanced.json" target="_blank">
+2. Advanced: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2FSpark2.0%2Fazuredeploy-advanced.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 	- Everything in Basic template plus:
