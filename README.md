@@ -89,6 +89,8 @@ An external Azure SQL DB is linked to store the Hive metastore so that it persis
  	STORED AS PARQUET
  	LOCATION 'wasb[s]://<containername>@<accountname>.blob.core.windows.net/<path>';
 
+For more information on HIVE Data Definition Language, click [here](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL)
+
 > When you're creating a custom metastore, do not use a database name that contains dashes or hyphens because this can cause the cluster creation process to fail.
 
 
