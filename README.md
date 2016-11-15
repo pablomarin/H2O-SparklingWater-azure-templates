@@ -79,7 +79,7 @@ The metastore contains Hive metadata, such as Hive table definitions, partitions
 By default, Hive uses an embedded Azure SQL database to store this information. The embedded database can't preserve the metadata when the cluster is deleted. The Hive metastore that comes by default when HDInsight is deployed is transient. When the cluster is deleted, Hive metastore gets deleted as well. 
 
 <b>On the Advanced Template: </b> <br>
-An external Azure SQL DB is linked to store the Hive metastore so that it persists even when the cluster is blown away.  For example, if you create Hive tables in a cluster created with an external Hive metastore, you can see those tables if you delete and re-create the cluster with the same Hive metastore. IMPORTANT: make sure that you set the location of those tables on your external/linked storage account, you can do this by calling the EXTERNAL clause on your SQL CREATE statement, for example:
+An external Azure SQL DB is linked to store the Hive metastore so that it persists even when the cluster is blown away.  For example, if you create Hive tables in a cluster created with an external Hive metastore, you can see those tables if you delete and re-create the cluster with the same Hive metastore. IMPORTANT: make sure that you set the location of those tables on your external/linked storage account, you can do this by calling the EXTERNAL and LOCATION clauses on your SQL CREATE statement, for example:
 
 	CREATE EXTERNAL TABLE page_view(viewTime INT, userid BIGINT,
     		page_url STRING, referrer_url STRING,
@@ -88,6 +88,9 @@ An external Azure SQL DB is linked to store the Hive metastore so that it persis
  	COMMENT 'This is the staging page view table'
  	STORED AS PARQUET
  	LOCATION 'wasb[s]://<containername>@<accountname>.blob.core.windows.net/<path>';
+
+On the above example, the table is stored NOT on the default storage account, but instead on the Linked storaged account.
+Both, the Hive Metastore on a external SQL DB, and the query with EXTERNAL and LOCATION, are necessary in order to make the tables to persist after the cluster is deleted.
 
 For more information on HIVE Data Definition Language, click [here](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL)
 
