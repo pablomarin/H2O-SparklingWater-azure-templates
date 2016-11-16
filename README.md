@@ -22,6 +22,7 @@ There are two kind of templates offered on this repo.
 	
 It takes about 20 minutes to create the cluster.
 
+<b> NOTE: Passwords need to be between 6-15 characters long, otherwise the deployment will fail!</b>
 
 ## Next Step: Run pySparkling Notebook Examples:
 
