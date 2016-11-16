@@ -25,7 +25,6 @@ It takes about 20 minutes to create the cluster.
 <b> NOTE: Passwords need to be between 6-72 characters long, it must contain at least 1 digit, 1 uppercase letter and 1 lowercase letter. Otherwise the deployment will fail!</b>
 
 ## Next Step: Run pySparkling Notebook Examples:
-
 Once your cluster is created, Open your browser and go to:
 
 	https://CLUSTERNAME.azurehdinsight.net/jupyter
@@ -36,7 +35,6 @@ In Jupyter home, you will see a folder called "H2O-PySparkling-Examples" with a 
 
 
 ## Azure HDInsight Architecture
-
 ![HDI arch](https://acom.azurecomcdn.net/80C57D/cdn/mediahandler/docarticles/dpsmedia-prod/azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-use-blob-storage/20160913101040/hdi.wasb.arch.png)
 
 Azure HDInsight Spark Clusters (Spark on YARN) come with:<br>
@@ -46,7 +44,6 @@ Defaults:<br>
 > Number of Worker nodes: 3 <br>
 > Size of Head Nodes: D12 (28G RAM, 4 cores)<br>
 > Size of Worker Nodes: D13 (56G RAM, 8 cores)<br>
-
 For a complete list of VM sizes go [here](https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-windows-sizes/#dv2-series)
 
 Hadoop supports a notion of the default file system. The default file system implies a default scheme and authority. It can also be used to resolve relative paths. During the HDInsight creation process, an Azure Storage account and a specific Azure Blob storage container from that account is designated as the default file system.
@@ -88,7 +85,7 @@ An external Azure SQL DB is linked to store the Hive metastore so that it persis
      		country STRING COMMENT 'country of origination')
  	COMMENT 'This is the staging page view table'
  	STORED AS PARQUET
- 	LOCATION 'wasb[s]://<containername>@<accountname>.blob.core.windows.net/<path>';
+ 	LOCATION 'wasb://<containername>@<accountname>.blob.core.windows.net/<path>'
 
 On the above example, the table is stored NOT on the default storage account, but instead on the Linked storaged account.
 Both, the Hive Metastore on a external SQL DB, and the query with EXTERNAL and LOCATION, are necessary in order to make the tables to persist after the cluster is deleted.
