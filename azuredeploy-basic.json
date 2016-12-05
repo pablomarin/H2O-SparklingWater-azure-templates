@@ -50,9 +50,9 @@
         "description": "The Spark version to be installed on the cluster."
       },
       "allowedValues": [
-        "1.6"
+        "2.0"
       ],
-      "defaultValue": "1.6"
+      "defaultValue": "2.0"
     },
     "clusterHeadNodeCount": {
       "type": "int",
