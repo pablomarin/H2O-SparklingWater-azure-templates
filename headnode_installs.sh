@@ -16,7 +16,7 @@ wait
 /usr/bin/anaconda/bin/pip install -U scikit-learn
 
 # Adjust based on the build of H2O you want to download.
-version=2.0
+version=1.6
 SparklingBranch=rel-${version}
 
 echo "Fetching latest build number for branch ${SparklingBranch}..."
