@@ -7,7 +7,7 @@ and assigns the Contributor role to it.
 
 ###############################################################################>
 
-Login-AzureRmAccount
+$azureAccount = Login-AzureRmAccount
 cls
 
 $appName = Read-Host "Type the AAD Application name"
@@ -43,8 +43,9 @@ Sleep -Seconds 40
 $roles = New-AzureRmRoleAssignment -RoleDefinitionName Contributor -ServicePrincipalName $app.ApplicationId.Guid
 
 Write-Host "`r`n================================================================="
-Write-Host -ForegroundColor Green "`r`nPFX certificate location:"
-Write-host -ForegroundColor White "$($certLocation)"
+
+Write-Host -ForegroundColor Green "`r`nAAD Tenant Id:"
+Write-host -ForegroundColor White "$($azureAccount.Context.Tenant.TenantId)"
 
 Write-Host -ForegroundColor Green "`r`nService Principal Object Id:"
 Write-Host -ForegroundColor White "$($sp.ApplicationId.Guid)"
@@ -54,6 +55,9 @@ Write-Host -ForegroundColor White "$($app.ApplicationId.Guid)"
 
 Write-Host -ForegroundColor Green "`r`nPFX certificate content:"
 Write-Host -ForegroundColor White "$($keyValue)"
+
+Write-Host -ForegroundColor Green "`r`nPFX certificate location:"
+Write-host -ForegroundColor White "$($certLocation)"
 
 #Write-Host -ForegroundColor Green "`r`nPFX certificate password:"
 #Write-Host -ForegroundColor White "$($pwd1_text)"
