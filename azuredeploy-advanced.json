@@ -92,8 +92,6 @@
       "type": "string",
       "defaultValue": "Standard_D3_v2",
       "allowedValues": [
-        "Standard_D1_v2",
-        "Standard_D2_v2",
         "Standard_D3_v2",
         "Standard_D4_v2",
         "Standard_D5_v2",
@@ -111,6 +109,7 @@
         "description": "The size of the head nodes in the HDInsight Spark cluster."
       }
     },
+
     "linkStorageAccountName": {
       "type": "string",
       "metadata": {
@@ -129,6 +128,7 @@
         "description": "The key for the additional storage account."
       }
     },
+
     "databaseServerName": {
       "type": "string",
       "metadata": {
@@ -151,6 +151,43 @@
       "type": "securestring",
       "metadata": {
         "description": "The linked Azure SQL database username password."
+      }
+    },
+
+    "adlStoreName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the existing Azure Data Lake Store account."
+      }
+    },
+    "aadTenantId": {
+      "type": "string",
+      "metadata": {
+        "description": "The tenant ID (guid) of the Azure Active Directory (AAD) tenant where the service principal resides."
+      }
+    },
+    "servicePrincipalObjectId": {
+      "type": "string",
+      "metadata": {
+        "description": "The AAD object ID (guid) of the service principal that represents the HDInsight cluster. The service principal will be given permissions on the root folder of the Data Lake Store account."
+      }
+    },
+    "servicePrincipalApplicationId": {
+      "type": "string",
+      "metadata": {
+        "description": "The AAD application ID (guid) of the service principal that represents the HDInsight cluster. The service principal will be given permissions on the root folder of the Data Lake Store account."
+      }
+    },
+    "servicePrincipalCertificateContents": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The base-64-encoded contents of the PFX certificate file that can be used to authenticate as the service principal that represents the HDInsight cluster."
+      }
+    },
+    "servicePrincipalCertificatePassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The password securing the PFX certificate file that can be used to authenticate as the service principal that represents the HDInsight cluster."
       }
     }
   },
@@ -249,6 +286,13 @@
               "restAuthCredential.isEnabled": true,
               "restAuthCredential.username": "[parameters('clusterLoginUserName')]",
               "restAuthCredential.password": "[parameters('clusterLoginPassword')]"
+            },
+            "clusterIdentity": {
+              "clusterIdentity.applicationId": "[parameters('servicePrincipalApplicationId')]",
+              "clusterIdentity.certificate": "[parameters('servicePrincipalCertificateContents')]",
+              "clusterIdentity.certificatePassword": "[parameters('servicePrincipalCertificatePassword')]",
+              "clusterIdentity.aadTenantId": "[concat('https://login.windows.net/',parameters('aadTenantId'))]",
+              "clusterIdentity.resourceUri": "https://management.core.windows.net/"
             },
             "hive-site": {
               "javax.jdo.option.ConnectionDriverName": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
