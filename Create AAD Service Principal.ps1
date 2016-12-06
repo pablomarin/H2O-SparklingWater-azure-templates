@@ -1,4 +1,13 @@
-﻿#Login-AzureRmAccount
+﻿<##############################################################################
+
+Create AAD Service Principal.ps1
+
+This script creates an Azure AD service principal entity in the Azure account
+and assigns the Contributor role to it.
+
+###############################################################################>
+
+Login-AzureRmAccount
 cls
 
 $appName = Read-Host "Type the AAD Application name"
