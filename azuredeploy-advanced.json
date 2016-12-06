@@ -63,7 +63,7 @@
     },
     "clusterHeadNodeSize": {
       "type": "string",
-      "defaultValue": "Standard_D3_v2",
+      "defaultValue": "Standard_D12_v2",
       "allowedValues": [
         "Standard_D3_v2",
         "Standard_D4_v2",
@@ -90,7 +90,7 @@
     },
     "clusterWorkerNodeSize": {
       "type": "string",
-      "defaultValue": "Standard_D3_v2",
+      "defaultValue": "Standard_D13_v2",
       "allowedValues": [
         "Standard_D3_v2",
         "Standard_D4_v2",
@@ -361,11 +361,6 @@
               },
               "scriptActions": [
                 {
-                  "name": "installR",
-                  "uri": "https://hdiconfigactions.blob.core.windows.net/linuxrconfigactionv01/r-installer-v01.sh",
-                  "parameters": ""
-                },
-                {
                   "name": "headnode_installs",
                   "uri": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/master/headnode_installs.sh",
                   "parameters": "[concat(parameters('clusterWorkerNodeCount'), ' ', parameters('sshUserName'))]"
@@ -389,11 +384,6 @@
                 "subnet": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName')), '/subnets/', variables('headNodeSubnetName'))]"
               },
               "scriptActions": [
-                {
-                  "name": "installR",
-                  "uri": "https://hdiconfigactions.blob.core.windows.net/linuxrconfigactionv01/r-installer-v01.sh",
-                  "parameters": ""
-                },
                 {
                   "name": "worker_installs",
                   "uri": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/master/worker_installs.sh",
