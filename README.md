@@ -2,7 +2,7 @@
 
 The goal of this repo is to provide an easy (click-and-go) way to deploy H2O Sparkling Water clusters on Microsoft Azure.
 
-There are two kind of templates offered on this repo.
+There are three kind of templates offered on this repo.
 
 1. Basic: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2Fmaster%2Fazuredeploy-basic.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
@@ -13,13 +13,18 @@ There are two kind of templates offered on this repo.
 	- VNet containing all resources
 	- Required python packages in each node
 	- R open in each node
-2. Advanced: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2Fmaster%2Fazuredeploy-advanced.json" target="_blank">
+2. Intermediate: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2Fmaster%2Fazuredeploy-intermediate.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 	- Everything in Basic template plus:
 	- Connection to additional data source (Linked Storage Account) - pre-requisite
 	- Connection to external Hive/Oozie Metastore (SQL Database) - pre-requisite
-	
+3. Advanced: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FSparklingWater-azure-template%2Fmaster%2Fazuredeploy-advanced.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
+	- Everything in Intermediate template plus:
+	- Connection to Azure Data Lake Store - pre-requisite
+
 It takes about 20 minutes to create the cluster.
 
 <b> NOTE: Passwords need to be between 12-72 characters long, it must contain at least 1 digit, 1 uppercase letter and 1 lowercase letter. Otherwise the deployment will fail!</b>
@@ -54,7 +59,7 @@ For the files on the default file system, you can use a relative path or an abso
 	wasbs:///example/jars/hadoop-mapreduce-examples.jar
 	/example/jars/hadoop-mapreduce-examples.jar
 
-In addition to this storage account, you can add additional storage accounts (<b>Advanced Template)</b> from the same Azure subscription or different Azure subscriptions during the creation process or after a cluster has been created. Note that the additional storage account must be in the same region than the HDI cluster. <b>Normally this is where your big data resides</b>. The syntax is:
+In addition to this storage account, you can add additional storage accounts (<b>Intermediate and Advanced Templates)</b> from the same Azure subscription or different Azure subscriptions during the creation process or after a cluster has been created. Note that the additional storage account must be in the same region than the HDI cluster. <b>Normally this is where your big data resides and/or where you want to store your HIVE tables for future persistance (more on this later)</b>. The syntax is:
 
 	wasb[s]://<containername>@<accountname>.blob.core.windows.net/<path>
 	
@@ -66,7 +71,7 @@ Most HDFS commands (for example, <b>ls</b>, <b>copyFromLocal</b> and <b>mkdir</b
 
 The cluster can also access any Blob storage containers that are configured with full public read access or public read access for blobs only.
 
-Only the data on the linked storage account and the external hive meta-store will persist after the cluster is deleted. 
+Only the data on the linked storage account and the external hive meta-store (Azure SQL Database) will persist after the cluster is deleted. 
 
 ### Hive Metastore
 
@@ -76,8 +81,8 @@ The metastore contains Hive metadata, such as Hive table definitions, partitions
 <b>On the Basic Tamplate: </b> <br>
 By default, Hive uses an embedded Azure SQL database to store this information. The embedded database can't preserve the metadata when the cluster is deleted. The Hive metastore that comes by default when HDInsight is deployed is transient. When the cluster is deleted, Hive metastore gets deleted as well. 
 
-<b>On the Advanced Template: </b> <br>
-An external Azure SQL DB is linked to store the Hive metastore so that it persists even when the cluster is blown away.  For example, if you create Hive tables in a cluster created with an external Hive metastore, you can see those tables if you delete and re-create the cluster with the same Hive metastore. IMPORTANT: make sure that you set the location of those tables on your external/linked storage account, you can do this by calling the EXTERNAL and LOCATION clauses on your SQL CREATE statement, for example:
+<b>On the Intermediate and Advanced Templates: </b> <br>
+An external Azure SQL DB is linked to store the Hive metastore so that it persists even when the cluster is blown away.  For example, if you create Hive tables in a cluster created with an external Hive metastore, you can see those tables if you delete and re-create the cluster with the same Hive metastore. <b> IMPORTANT: make sure that you set the location of those tables on your external/linked storage account, you can do this by calling the EXTERNAL and LOCATION clauses on your SQL CREATE statement </b>, for example:
 
 	CREATE EXTERNAL TABLE page_view(viewTime INT, userid BIGINT,
     		page_url STRING, referrer_url STRING,
@@ -88,7 +93,7 @@ An external Azure SQL DB is linked to store the Hive metastore so that it persis
  	LOCATION 'wasb://<containername>@<accountname>.blob.core.windows.net/<path>'
 
 On the above example, the table is stored NOT on the default storage account, but instead on the Linked storaged account.
-Both, the Hive Metastore on a external SQL DB, and the query with EXTERNAL and LOCATION, are necessary in order to make the tables to persist after the cluster is deleted.
+Both, the Hive Metastore, on a external SQL DB, and the query with EXTERNAL and LOCATION, are necessary in order to make the tables to persist after the cluster is deleted.
 
 For more information on HIVE Data Definition Language, click [here](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL)
 
@@ -99,15 +104,15 @@ For more information on HIVE Data Definition Language, click [here](https://cwik
 
 ![Sparkling architecture](http://www.ibmbigdatahub.com/sites/default/files/quality_of_life_fig_1.jpg)
 
-Both templates will automatically download the latest version of Sparkling Water compatible with Spark 1.6.
+All templates will automatically download the latest version of Sparkling Water compatible with Spark 1.6.
 It will also copy the sparkling water folder on the default storage under /H2O-Sparkling-Water/ folder.
 
 H2O can be installed as a standalone cluster, on top of YARN, and on top of Spark on top of YARN.
-Both templates introduced in this repo install H2O on top of Spark on top of YARN => Sparkling Water on YARN.
+All three templates introduced in this repo install H2O on top of Spark on top of YARN => Sparkling Water on YARN.
 
 Note that all spark applications deployed using a Jupyter Notebook will have "yarn-cluster" deploy-mode. This means that the spark driver node will be allocated on any worker node of the cluster, NOT on the head nodes.
 
-<b>Another very important thing: Memory and Cores allocation in YARN.<br></b>
+<b>Another very important note: Memory and Cores allocation in YARN.<br></b>
 
 The process of smart RAM and CPU allocation in Spark over YARN is truly an art. By default, the notebook examples in this repo allocate 70%-80% of the workers node RAM and 1 executor per worker node, every time you run the notebook. <br>
 This means:
@@ -121,7 +126,7 @@ http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-2/
 
 ### How do I see the H2O Flow UI?
 
-Both Basic and Advanced templates have to be manually tweeked in the azure portal in order to allow http access to the VM where the spark driver falls (the only VM that provides the FLOW portal). <b>Note: the spark driver can change to any worker node each time you open/run a notebook (submit application).</b>
+All three templates have to be manually tweeked in the azure portal in order to allow http access to the VM where the spark driver falls (the only VM that provides the FLOW portal). <b>Note: the spark driver can change to any worker node each time you open/run a notebook (submit application).</b>
 
 This is what you need to do:<br>
 In the notebook, once you create the h2o context, you will see an output like this:
@@ -168,17 +173,13 @@ Couple of key benefits of using the PySpark kernel are:
 
 ## Where are the notebooks stored?
 
-Jupyter notebooks are saved to the storage account associated with the cluster under the **/HdiNotebooks** folder.  Notebooks, text files, and folders that you create from within Jupyter will be accessible from WASB.  For example, if you use Jupyter to create a folder **myfolder** and a notebook **myfolder/mynotebook.ipynb**, you can access that notebook at `wasbs:///HdiNotebooks/myfolder/mynotebook.ipynb`.  The reverse is also true, that is, if you upload a notebook directly to your storage account at `/HdiNotebooks/mynotebook1.ipynb`, the notebook will be visible from Jupyter as well.  Notebooks will remain in the storage account even after the cluster is deleted.
+Jupyter notebooks are saved to the storage account associated with the cluster under the **/HdiNotebooks** folder.  Notebooks, text files, and folders that you create from within Jupyter will be accessible from WASB.  For example, if you use Jupyter to create a folder **myfolder** and a notebook **myfolder/mynotebook.ipynb**, you can access that notebook at `wasbs:///HdiNotebooks/myfolder/mynotebook.ipynb`.  The reverse is also true, that is, if you upload a notebook directly to your storage account at `/HdiNotebooks/mynotebook1.ipynb`, the notebook will be visible from Jupyter as well.
 
 The way notebooks are saved to the storage account is compatible with HDFS. So, if you SSH into the cluster you can use file management commands like the following:
 
 	hdfs dfs -ls /HdiNotebooks             				  # List everything at the root directory – everything in this directory is visible to Jupyter from the home page
 	hdfs dfs –copyToLocal /HdiNotebooks    				# Download the contents of the HdiNotebooks folder
 	hdfs dfs –copyFromLocal example.ipynb /HdiNotebooks   # Upload a notebook example.ipynb to the root folder so it’s visible from Jupyter
-
-
-In case there are issues accessing the storage account for the cluster, the notebooks are also saved on the headnode `/var/lib/jupyter`.
-
 
 
 ## Delete the cluster
