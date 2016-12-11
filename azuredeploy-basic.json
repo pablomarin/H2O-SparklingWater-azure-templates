@@ -53,7 +53,7 @@
         "1.6",
         "2.0"
       ],
-      "defaultValue": "2."
+      "defaultValue": "2.0"
     },
     "clusterHeadNodeCount": {
       "type": "int",
