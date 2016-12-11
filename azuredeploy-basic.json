@@ -241,7 +241,7 @@
                 {
                   "name": "headnode_installs",
                   "uri": "https://raw.githubusercontent.com/pablomarin/SparklingWater-azure-template/master/headnode_installs.sh",
-                  "parameters": "[concat(parameters('clusterWorkerNodeCount'), ' ', parameters('sshUserName'), ' ', parameters('sparkVersion'))]"
+                  "parameters": "[concat(parameters('sshUserName'), ' ', parameters('sparkVersion'))]"
                 }
               ]
             },
